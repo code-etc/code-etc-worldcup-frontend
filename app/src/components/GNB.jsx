@@ -23,16 +23,16 @@ const GNB = () => {
         <ul ref={sidebarRef} className={styles.sidebar}>
           <strong className={styles.logo}>Strange Brother World Cup</strong>
           <li>
-            <a href="/">로그인</a>
+            <a href="/login">로그인</a>
           </li>
           <li>
-            <a href="/register-worldcup">월드컵 등록</a>
+            <a href="/registerWorldcup">월드컵 등록</a>
           </li>
           <li>
-            <a href="/register-select">대신 정해주기 등록</a>
+            <a href="/registerSelect">대신 정해주기 등록</a>
           </li>
           <li>
-            <a href="/">마이페이지</a>
+            <a href="/myPage">마이페이지</a>
           </li>
         </ul>
 
@@ -41,16 +41,16 @@ const GNB = () => {
           <strong className={styles.logo}>Strange Brother World Cup</strong>
 
           <li>
-            <a href="/">로그인</a>
+            <a href="/login">로그인</a>
           </li>
           <li>
-            <a href="/register-worldcup">월드컵 등록</a>
+            <a href="/registerWorldcup">월드컵 등록</a>
           </li>
           <li>
-            <a href="/register-select">대신 정해주기 등록</a>
+            <a href="/registerSelect">대신 정해주기 등록</a>
           </li>
           <li>
-            <a href="/">마이페이지</a>
+            <a href="/myPage">마이페이지</a>
           </li>
         </ul>
       </nav>
