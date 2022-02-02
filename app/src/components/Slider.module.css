@@ -1,0 +1,81 @@
+:root {
+  --visible-number: 1;
+  --item-width: 400px;
+  --item-height: 250px;
+  --item-margin: 60px;
+}
+.slide_list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  height: var(--item-height);
+  list-style: none;
+  transition: transform 800ms ease-in-out;
+}
+.slide_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: var(--item-height);
+  color: black;
+  text-align: center;
+  background-color: rgba(200, 200, 200);
+  border-radius: 3%;
+}
+.container {
+  position: relative;
+  /* width: calc(
+    var(--item-width) * var(--visible-number) + (var(--visible-number) - 1) *
+      var(--item-margin)
+  ); */
+  width: 100%;
+  height: var(--item-height);
+  margin: 40px auto;
+  overflow: hidden;
+}
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  color: black;
+  font-weight: 700;
+  font-size: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.prev {
+  left: 5px;
+}
+.next {
+  right: 5px;
+}
+.title {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
+}
+.button_container {
+  display: flex;
+}
+.start_button,
+.rank_button {
+  color: black;
+  font-weight: 400;
+  font-size: 15px;
+  text-decoration: none;
+}
+.start_button {
+  margin-right: 10px;
+}
+@media screen and (min-width: 500px) {
+  .slide_item {
+    width: var(--item-width);
+    margin-right: var(--item-margin);
+  }
+}
