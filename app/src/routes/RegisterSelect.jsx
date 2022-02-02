@@ -1,7 +1,12 @@
 import React from "react";
+import ImageUpload from "../components/ImagaeUpload";
 
 const RegisterSelect = () => {
-  return <div></div>;
+  return (
+    <>
+      <ImageUpload name="대신 정해주기 등록" />
+    </>
+  );
 };
 
 export default RegisterSelect;
