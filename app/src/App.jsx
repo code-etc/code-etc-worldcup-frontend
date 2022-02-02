@@ -9,6 +9,7 @@ import RegisterSelect from "./routes/RegisterSelect";
 import RegisterWorldcup from "./routes/RegisterWorldcup";
 
 const App = () => {
+  console.log("develop");
   return (
     <>
       <BrowserRouter>
