@@ -7,11 +7,12 @@ import PlaySelect from "./routes/PlaySelect";
 import PlayWorldcup from "./routes/PlayWorldcup";
 import RegisterSelect from "./routes/RegisterSelect";
 import RegisterWorldcup from "./routes/RegisterWorldcup";
-
+import GNB from "./components/GNB";
 const App = () => {
   console.log("develop");
   return (
     <>
+      <GNB />
       <BrowserRouter>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
