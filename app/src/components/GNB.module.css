@@ -8,7 +8,6 @@
 .GNB {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
   padding: 10px;
   background-color: var(--primary-color);
 }
