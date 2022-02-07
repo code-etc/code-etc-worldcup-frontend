@@ -70,7 +70,12 @@ const Slide = ({ datas }) => {
           ref={ulRef}
         >
           {datas.map((data) => (
-            <li ref={liRef} key={data.id} className={styles.slide_item}>
+            <li
+              style={{ backgroundImage: `url(${data.thumbnail})` }}
+              ref={liRef}
+              key={data.id}
+              className={styles.slide_item}
+            >
               <strong className={styles.title}>{data.title}</strong>
               <div className={styles.button_container}>
                 <a className={styles.start_button} href="/">
@@ -80,6 +85,7 @@ const Slide = ({ datas }) => {
                   랭킹보기
                 </a>
               </div>
+              <div className={styles.author}>Made by:{data.author}</div>
             </li>
           ))}
         </ul>

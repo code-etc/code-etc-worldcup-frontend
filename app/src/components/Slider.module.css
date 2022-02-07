@@ -16,6 +16,7 @@
 .slide_item {
   display: flex;
   flex-direction: column;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: 100vw;
@@ -24,13 +25,21 @@
   text-align: center;
   background-color: rgba(200, 200, 200);
   border-radius: 3%;
+  background-size: cover;
 }
+.slide_item::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
+}
+
 .container {
   position: relative;
-  /* width: calc(
-    var(--item-width) * var(--visible-number) + (var(--visible-number) - 1) *
-      var(--item-margin)
-  ); */
   width: 100%;
   height: var(--item-height);
   margin: 40px auto;
@@ -40,7 +49,7 @@
 .next {
   position: absolute;
   top: 50%;
-  color: black;
+  color: white;
   font-weight: 700;
   font-size: 20px;
   background: transparent;
@@ -48,6 +57,9 @@
   border-radius: 4px;
   transform: translateY(-50%);
   cursor: pointer;
+  z-index: 100;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
 }
 .prev {
   left: 5px;
@@ -55,20 +67,38 @@
 .next {
   right: 5px;
 }
+.author {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: white;
+  z-index: 100;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
+}
 .title {
+  color: white;
   margin-bottom: 20px;
   font-weight: 700;
   font-size: 24px;
+  font-weight: 800;
+  z-index: 100;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
 }
 .button_container {
   display: flex;
 }
 .start_button,
 .rank_button {
-  color: black;
-  font-weight: 400;
+  color: white;
+  font-weight: 800;
   font-size: 15px;
   text-decoration: none;
+
+  z-index: 100;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
 }
 .start_button {
   margin-right: 10px;
