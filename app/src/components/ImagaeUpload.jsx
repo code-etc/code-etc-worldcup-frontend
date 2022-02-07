@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import ImageItem from "./ImageItem";
 import styles from "./ImageUpload.module.css";
 
-const ImageUpload = ({ name }) => {
+const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
   const labelRef = useRef(null);
   const onImageSelect = (event) => {
+    if (maxImageNum === items.length) {
+      alert("후보자 개수 초과");
+      return 0;
+    }
     const {
       target: { files },
     } = event;
@@ -34,7 +38,6 @@ const ImageUpload = ({ name }) => {
   };
   const onImageItemSetting = (imageTitle, i) => {
     setItems(items.map((item) => (item.id === i ? { ...item, title: imageTitle } : item)));
-
     console.log(items);
   };
   const deleteItem = (index) => {
