@@ -6,6 +6,8 @@ import "./index.css";
 import { worker } from "./mocks/server";
 worker.start();
 
+window.__mswStop = worker.stop;
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
