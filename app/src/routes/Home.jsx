@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Slider from "../components/Slider";
 
 const Home = () => {
+  const [loadingWorldcup, setLoadingWorldcup] = useState(true);
+  const [loadingSelect, setLoadingSelect] = useState(true);
   const [worldcupLists, setWorldcupLists] = useState([]);
   const [selectLists, setSelectLists] = useState([]);
   const divisionWorldcupList = (arr) => {
@@ -42,11 +44,13 @@ const Home = () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)).json();
     console.log(json);
     divisionWorldcupList(json);
+    setLoadingWorldcup(false);
   };
   const getSelectList = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/selectList`)).json();
     console.log(json);
     divisionSelectList(json);
+    setLoadingSelect(false);
   };
   useEffect(() => {
     getWorldcupList();
@@ -54,16 +58,21 @@ const Home = () => {
   }, []);
   return (
     <>
-      <div>이상형월드컵</div>
-      {worldcupLists.map((worldcuplist, i) => (
-        <Slider key={i} datas={worldcuplist} />
-      ))}
-      <div>대신정해주기</div>
-      {selectLists.map((selectlist, i) => (
-        <Slider key={i} datas={selectlist} />
-      ))}
+      {loadingWorldcup || loadingSelect ? (
+        <div>loading...</div>
+      ) : (
+        <>
+          <div>이상형월드컵</div>
+          {worldcupLists.map((worldcuplist, i) => (
+            <Slider key={i} datas={worldcuplist} />
+          ))}
+          <div>대신정해주기</div>
+          {selectLists.map((selectlist, i) => (
+            <Slider key={i} datas={selectlist} />
+          ))}
+        </>
+      )}
     </>
   );
 };
-
 export default Home;
