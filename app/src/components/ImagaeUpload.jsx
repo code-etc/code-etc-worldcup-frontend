@@ -84,7 +84,15 @@ const ImageUpload = ({ name, maxImageNum }) => {
   }, [items]);
   return (
     <>
-      <form className={styles.container} onSubmit={onSubmit} action="">
+      <form
+        className={styles.container}
+        onSubmit={onSubmit}
+        action=""
+        onDrop={(e) => e.preventDefault()}
+        onDragEnter={(e) => e.preventDefault()}
+        onDragOver={(e) => e.preventDefault()}
+        onDragLeave={(e) => e.preventDefault()}
+      >
         <header className={styles.header}>
           <strong className={styles.title}>{name}</strong>
           <button type="submit">등록하기</button>

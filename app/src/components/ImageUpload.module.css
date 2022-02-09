@@ -1,5 +1,6 @@
 .container {
   padding: 40px 30px;
+  height: 100vh; /*드래그 드롭 이벤트 방지위해서*/
 }
 .header {
   display: flex;
