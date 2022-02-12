@@ -10,7 +10,14 @@ const Home = () => {
     const maxLength = 15;
     for (let i = 0; i < parseInt(arr.length / maxLength) + 1; i++) {
       let list = [];
-      if (i === parseInt(arr.length / maxLength)) {
+      if (i === parseInt(arr.length / maxLength) - 1 && arr.length % maxLength < 4) {
+        for (let j = 0; j < maxLength + (arr.length % maxLength); j++) {
+          list[j] = arr[j + i * maxLength];
+        }
+        setWorldcupLists((prev) => [...prev, list]);
+        console.log(list);
+        break;
+      } else if (i === parseInt(arr.length / maxLength)) {
         for (let j = 0; j < arr.length % maxLength; j++) {
           list[j] = arr[j + i * maxLength];
         }
@@ -27,7 +34,14 @@ const Home = () => {
     const maxLength = 15;
     for (let i = 0; i < parseInt(arr.length / maxLength) + 1; i++) {
       let list = [];
-      if (i === parseInt(arr.length / maxLength)) {
+      if (i === parseInt(arr.length / maxLength) - 1 && arr.length % maxLength < 4) {
+        for (let j = 0; j < maxLength + (arr.length % maxLength); j++) {
+          list[j] = arr[j + i * maxLength];
+        }
+        setSelectLists((prev) => [...prev, list]);
+        console.log(list);
+        break;
+      } else if (i === parseInt(arr.length / maxLength)) {
         for (let j = 0; j < arr.length % maxLength; j++) {
           list[j] = arr[j + i * maxLength];
         }
@@ -59,7 +73,9 @@ const Home = () => {
   return (
     <>
       {loadingWorldcup || loadingSelect ? (
-        <div>loading...</div>
+        <div className="flex justify-center items-center h-screen">
+          <div className="font-bold text-lg">Loading</div>
+        </div>
       ) : (
         <>
           <div>이상형월드컵</div>
