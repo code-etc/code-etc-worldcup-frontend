@@ -57,7 +57,7 @@
   border-radius: 4px;
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 100;
+  z-index: 20;
   -webkit-text-stroke-width: 0.5px;
   -webkit-text-stroke-color: black;
 }
