@@ -9,13 +9,15 @@ const handlers = [
         title: "가지고 싶은 이모지 정해주기",
         select: [
           {
-            name: "하트",
-            picture: "https://s3.marpple.co/f1/2019/1/1235206_1548918825999_78819.png",
+            name: "웃는 이모지",
+            picture:
+              "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
             tagList: "",
           },
           {
-            name: "도넛",
-            picture: "https://s3.marpple.co/f1/2019/1/1235206_1548918758054_55883.png",
+            name: "놀란 이모지",
+            picture:
+              "https://images.unsplash.com/photo-1628260412297-a3377e45006f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
             tagList: "",
           },
         ],
