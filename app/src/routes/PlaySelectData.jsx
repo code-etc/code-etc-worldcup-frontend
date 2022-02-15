@@ -1,25 +1,28 @@
 import React from "react";
 
-const PlaySelectData = ({ selects, selectTitle }) => {
-  const clickSelect = (event) => {
+const PlaySelectData = ({ selectDatas, selectTitle, setClickSelect }) => {
+  const handleSelect = (event) => {
     console.log(event.target);
+    setClickSelect(true);
   };
 
   return (
     <>
       <h2 className="text-[40px] mt-[40px] w-fit m-auto">{selectTitle}</h2>
-      <div className="absolute top-[50%] left-[48%] text-[80px] z-10">VS</div>
-      <div className="mt-[40px]">
-        {selects.map((select, i) => (
+      <div className="absolute top-[45%] left-[47%] text-[80px] z-10">VS</div>
+      <div className="mt-[40px] flex w-[100%]">
+        {selectDatas.map((selectData, index) => (
           <div
-            className={
-              "w-[880px] h-[700px] relative cursor-pointer " +
-              (i === 0 ? "float-left ml-[50px]" : "float-right mr-[50px]")
-            }
-            onClick={clickSelect}
+            key={selectData.name}
+            className={"w-[50%] h-[700px] relative cursor-pointer " + (index === 0 ? "ml-[50px]" : "ml-[120px]")}
+            onClick={handleSelect}
           >
-            <h3 className="absolute top-[45%] left-[45%] text-[80px]">{select.name}</h3>
-            <img src={select.picture} className="w-[880px] h-[700px]" alt={select.name} />
+            <h3 className="absolute xl:top-[45%] left-[45%] xl:text-[80px] text-[40px] top-[30%]">{selectData.name}</h3>
+            <img
+              src={selectData.picture}
+              className="max-w-[90%] min-w-[300px] h-auto max-h-[90%] min-h-[50%] m-auto"
+              alt={selectData.name}
+            />
           </div>
         ))}
       </div>
