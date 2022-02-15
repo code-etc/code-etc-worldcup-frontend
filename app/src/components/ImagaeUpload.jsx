@@ -25,6 +25,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
           id: items.length,
           image: result,
           title: "",
+          tags: [],
         };
         setItems((prev) => [...prev, item]);
       };
@@ -36,8 +37,8 @@ const ImageUpload = ({ name, maxImageNum }) => {
     console.log(items);
     //title, items 넘기면됨.
   };
-  const onImageItemSetting = (imageTitle, i) => {
-    setItems(items.map((item) => (item.id === i ? { ...item, title: imageTitle } : item)));
+  const onImageItemSetting = (imageTitle, tags, i) => {
+    setItems(items.map((item) => (item.id === i ? { ...item, title: imageTitle, tags } : item)));
     console.log(items);
   };
   const deleteItem = (index) => {
