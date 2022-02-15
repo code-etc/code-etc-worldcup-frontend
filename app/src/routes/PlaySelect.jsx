@@ -34,8 +34,8 @@ const PlaySelect = () => {
 
   return (
     <>
-      <div>
-        <div className="overflow-hidden">
+      <div className="min-w-[1024px]">
+        <div>
           {selectTitle && (
             <PlaySelectData selectDatas={selectDatas} selectTitle={selectTitle} setClickSelect={setClickSelect} />
           )}
