@@ -12,6 +12,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
     if (
       e.target.value[e.target.value.length - 1] === "\n" ||
       e.target.value[e.target.value.length - 1] === " " ||
+      e.target.value[e.target.value.length - 1] === "#" ||
       regex.test(e.target.value.slice(1, e.target.value.length))
     ) {
       setTagInput(e.target.value);
@@ -24,7 +25,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   };
   const onDeleteTagBtn = (e) => {
     console.log(e.target.id);
-    setTags(tags.filter((tag, i) => i !== Number(e.target.id)));
+    setTags(item.tags.filter((tag, i) => i !== Number(e.target.id)));
   };
   useEffect(() => {
     if (tagInput[tagInput.length - 1] === " " || tagInput[tagInput.length - 1] === "\n") {
