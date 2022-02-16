@@ -10,10 +10,11 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
     const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
     console.log(regex.test(e.target.value));
     if (
-      e.target.value[e.target.value.length - 1] === "\n" ||
-      e.target.value[e.target.value.length - 1] === " " ||
-      e.target.value[e.target.value.length - 1] === "#" ||
-      regex.test(e.target.value.slice(1, e.target.value.length))
+      e.target.value[0] === "#" &&
+      (e.target.value[e.target.value.length - 1] === "\n" ||
+        e.target.value[e.target.value.length - 1] === " " ||
+        e.target.value[e.target.value.length - 1] === "#" ||
+        regex.test(e.target.value.slice(1, e.target.value.length)))
     ) {
       setTagInput(e.target.value);
       console.log(e.target.value);
