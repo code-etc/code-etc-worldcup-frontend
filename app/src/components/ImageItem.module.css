@@ -3,6 +3,9 @@
   max-width: 300px;
   margin: 10px;
 }
+.image {
+  object-fit: contain;
+}
 .imageItem input {
   height: 18px;
 }
