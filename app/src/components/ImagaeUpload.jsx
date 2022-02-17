@@ -31,6 +31,8 @@ const ImageUpload = ({ name, maxImageNum }) => {
       };
       reader.readAsDataURL(theFile);
     }
+
+    event.target.value = "";
   };
   const onSubmit = (e) => {
     e.preventDefault();
