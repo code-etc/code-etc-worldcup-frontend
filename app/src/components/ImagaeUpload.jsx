@@ -60,6 +60,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
           id: items.length,
           image: result,
           title: "",
+          tags: [],
         };
         setItems((prev) => [...prev, item]);
       };
