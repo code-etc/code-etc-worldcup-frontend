@@ -25,6 +25,9 @@
   border-bottom: 1px solid black;
   resize: none;
 }
+.imageTag_input {
+  border: none;
+}
 .imageTitle_input:focus,
 .imageTag_input:focus {
   outline: none;

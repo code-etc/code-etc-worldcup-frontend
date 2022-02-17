@@ -9,16 +9,9 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   const onChangeTextArea = (e) => {
     const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
     console.log(regex.test(e.target.value));
-    if (
-      e.target.value[0] === "#" &&
-      (e.target.value[e.target.value.length - 1] === "\n" ||
-        e.target.value[e.target.value.length - 1] === " " ||
-        e.target.value[e.target.value.length - 1] === "#" ||
-        regex.test(e.target.value.slice(1, e.target.value.length)))
-    ) {
-      setTagInput(e.target.value);
-      console.log(e.target.value);
-    }
+
+    setTagInput(e.target.value);
+    console.log(e.target.value);
   };
   const onDeleteBtn = (e) => {
     deleteItem(i);
@@ -29,16 +22,18 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
     setTags(item.tags.filter((tag, i) => i !== Number(e.target.id)));
   };
   useEffect(() => {
+    const regex = /^[ㄱ-ㅎ||가-힣|a-z|A-Z|0-9|ㅏ-ㅣ|]+$/;
+
     if (tagInput[tagInput.length - 1] === " " || tagInput[tagInput.length - 1] === "\n") {
-      if (item.tags.length < 10) {
-        if (tagInput[0] === "#") {
-          setTags([...item.tags, tagInput.slice(1, -1)]);
+      if (regex.test(tagInput.slice(0, -1))) {
+        if (item.tags.length < 10) {
+          setTags([...item.tags, tagInput.slice(0, -1)]);
         } else {
-          alert("태그는 #으로 시작해야합니다.");
+          alert("태그는 10개까지 가능합니다.");
           setTagInput("");
         }
       } else {
-        alert("태그는 10개까지 가능합니다.");
+        alert("태그에 특수기호는 들어갈 수 없습니다.");
         setTagInput("");
       }
     }
@@ -59,18 +54,27 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
               삭제
             </button>
           </div>
-          <input className={styles.imageTitle_input} type="text" value={item.title} onChange={onChangeInput} />
+          <input
+            className={styles.imageTitle_input}
+            placeholder="설명"
+            type="text"
+            value={item.title}
+            onChange={onChangeInput}
+          />
         </div>
         <div>
           <div className={styles.imageTag}>이미지 태그</div>
-          <textarea
-            className={styles.imageTag_input}
-            placeholder="태그"
-            value={tagInput === "" ? "#" + tagInput : tagInput}
-            onChange={onChangeTextArea}
-            cols={3}
-            rows={1}
-          />
+          <div className="flex text-[12px] border-solid border-b-[1px] border-black">
+            <span className="">#</span>
+            <textarea
+              className={styles.imageTag_input}
+              placeholder="태그"
+              value={tagInput}
+              onChange={onChangeTextArea}
+              cols={3}
+              rows={1}
+            />
+          </div>
           <ul className="flex flex-wrap">
             {item.tags.map((tag, i) => (
               <li className="flex text-[12px] bg-slate-200 mb-[2px] mr-[5px] pr-[2px] pl-[2px] rounded-[4px]" key={i}>
