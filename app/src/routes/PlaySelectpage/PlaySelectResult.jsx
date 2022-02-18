@@ -8,9 +8,8 @@ const PlaySelectResult = ({ selectResults }) => {
     <>
       <div className="flex w-[100%] h-[180px] content-center">
         {selectResults.map((selectResult) => (
-          <div className="w-[50%]">
+          <div className="w-[50%]" key={selectResult.name}>
             <h2
-              key={selectResult.name}
               className={
                 "w-[240px] m-auto pl-[80px] " +
                 (selectResult.percent.split("").splice(0, 2).join("") > 50

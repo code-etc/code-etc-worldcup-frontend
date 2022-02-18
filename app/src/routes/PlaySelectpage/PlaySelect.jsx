@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PlaySelectData from "./PlaySelectData";
+import PlaySelectDatas from "./PlaySelectDatas";
 import PlaySelectResult from "./PlaySelectResult";
 
 const PlaySelect = () => {
@@ -34,16 +34,13 @@ const PlaySelect = () => {
 
   return (
     <>
-      <div className="min-w-[1024px]">
-        <div>
-          {selectTitle && (
-            <PlaySelectData selectDatas={selectDatas} selectTitle={selectTitle} setClickSelect={setClickSelect} />
-          )}
+      <section className="min-w-[1024px] w-[100%] h-fit mainFont">
+        <div className="w-[100%-100px]  mx-[50px]">
+          <h2 className="text-[40px] w-fit m-auto">{selectTitle}</h2>
+          {selectTitle && <PlaySelectDatas selectDatas={selectDatas} setClickSelect={setClickSelect} />}
         </div>
-        <div className="relative xl:top-[-100px] w-[100%] top-[-200px]">
-          {selectResults.length > 0 && <PlaySelectResult selectResults={selectResults} />}
-        </div>
-      </div>
+        <div className="w-[100%]">{selectResults.length > 0 && <PlaySelectResult selectResults={selectResults} />}</div>
+      </section>
     </>
   );
 };
