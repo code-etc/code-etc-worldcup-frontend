@@ -4,9 +4,10 @@ import Home from "./routes/Home";
 import Login from "./routes/Login";
 import MyPage from "./routes/MyPage";
 import PlaySelect from "./routes/PlaySelect";
-import PlayWorldcup from "./routes/PlayWorldcup";
+import PlayWorldcup from "./routes/PlayWorldcuppage/PlayWorldcup";
 import RegisterSelect from "./routes/RegisterSelect";
 import RegisterWorldcup from "./routes/RegisterWorldcup";
+import "./App.css";
 
 const App = () => {
   console.log("develop");
