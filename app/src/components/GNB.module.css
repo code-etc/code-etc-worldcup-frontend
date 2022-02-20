@@ -10,6 +10,7 @@
   justify-content: space-between;
   padding: 10px;
   background-color: var(--primary-color);
+  font-family: "BMHANNAPro", sans-serif;
 }
 .menu_button {
   background-color: transparent;
