@@ -1,6 +1,7 @@
 .container {
   padding: 40px 30px;
   height: 100vh; /*드래그 드롭 이벤트 방지위해서*/
+  font-family: "BMHANNAPro", sans-serif;
 }
 .header {
   display: flex;
@@ -9,20 +10,20 @@
 }
 .header .title {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .header button {
   background-color: transparent;
   color: #0554f2;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   border: none;
   cursor: pointer;
 }
 
 main .title {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 main .title_input {
