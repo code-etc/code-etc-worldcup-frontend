@@ -18,8 +18,32 @@ const Slide = ({ datas }) => {
   });
 
   const ITEM_NUMBER = datas.length;
-  const VISIBLE_NUMBER = 1;
+  const [VISIBLE_NUMBER, setVisibleNumber] = useState(1);
+  const handleResize = () => {
+    if (window.innerWidth < 730) {
+      setVisibleNumber(1);
+    } else if (window.innerWidth < 1100) {
+      setVisibleNumber(2);
+    } else if (window.innerWidth < 1600) {
+      setVisibleNumber(3);
+    } else {
+      setVisibleNumber(4);
+    }
+  };
+
   useEffect(() => {
+    console.log("width: ", window.innerWidth);
+    if (window.innerWidth < 730) {
+      setVisibleNumber(1);
+    } else if (window.innerWidth < 1100) {
+      setVisibleNumber(2);
+    } else if (window.innerWidth < 1600) {
+      setVisibleNumber(3);
+    } else {
+      setVisibleNumber(4);
+    }
+    console.log("VISIBLE_NUMBER: ", VISIBLE_NUMBER);
+    window.addEventListener("resize", handleResize);
     //자동 슬라이드
     timeoutRef.current = setInterval(() => {
       setItemIndex((prev) => prev + 1);
@@ -40,8 +64,8 @@ const Slide = ({ datas }) => {
     if (first.current) {
       first.current = false;
     } else {
-      if (itemIndex === ITEM_NUMBER - VISIBLE_NUMBER + 1) setItemIndex(0);
-      if (itemIndex === -1) setItemIndex(ITEM_NUMBER - VISIBLE_NUMBER);
+      if (itemIndex >= ITEM_NUMBER - VISIBLE_NUMBER + 1) setItemIndex(0);
+      if (itemIndex <= -1) setItemIndex(ITEM_NUMBER - VISIBLE_NUMBER);
       ulRef.current.style.transform = `translateX(-${(100 / ITEM_NUMBER) * itemIndex}%)`;
     }
   }, [itemIndex]);
