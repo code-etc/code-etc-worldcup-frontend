@@ -6,14 +6,11 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
   const labelRef = useRef(null);
-  const onImageSelect = (event) => {
+  const uploadFunc = (files) => {
     if (maxImageNum === items.length) {
       alert("후보자 개수 초과");
       return 0;
     }
-    const {
-      target: { files },
-    } = event;
     for (let i = 0; i < files.length; i++) {
       const theFile = files[i];
       const reader = new FileReader();
@@ -27,11 +24,22 @@ const ImageUpload = ({ name, maxImageNum }) => {
           title: "",
           tags: [],
         };
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].image === item.image) {
+            alert("같은 이미지는 올릴 수 없습니다.");
+            return;
+          }
+        }
         setItems((prev) => [...prev, item]);
       };
       reader.readAsDataURL(theFile);
     }
-
+  };
+  const onImageSelect = (event) => {
+    const {
+      target: { files },
+    } = event;
+    uploadFunc(files);
     event.target.value = "";
   };
   const onSubmit = (e) => {
@@ -51,23 +59,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
 
     labelRef.current.classList.remove(styles.is_over);
     const files = e.dataTransfer.files;
-    for (let i = 0; i < files.length; i++) {
-      const theFile = files[i];
-      const reader = new FileReader();
-      reader.onloadend = (finishedEvnet) => {
-        const {
-          currentTarget: { result },
-        } = finishedEvnet;
-        const item = {
-          id: items.length,
-          image: result,
-          title: "",
-          tags: [],
-        };
-        setItems((prev) => [...prev, item]);
-      };
-      reader.readAsDataURL(theFile);
-    }
+    uploadFunc(files);
     console.log(e.dataTransfer.files);
   };
   const onDragEnter = (e) => {
