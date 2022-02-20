@@ -12,6 +12,7 @@
   height: var(--item-height);
   list-style: none;
   transition: transform 800ms ease-in-out;
+  font-family: "BMHANNAPro", sans-serif;
 }
 .slide_item {
   display: flex;
