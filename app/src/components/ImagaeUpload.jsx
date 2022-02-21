@@ -5,6 +5,7 @@ import styles from "./ImageUpload.module.css";
 const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
+  const [category, setcategory] = useState("");
   const labelRef = useRef(null);
   const uploadFunc = (files) => {
     if (maxImageNum === items.length) {
@@ -44,7 +45,12 @@ const ImageUpload = ({ name, maxImageNum }) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(items);
+    const body = {
+      title,
+      category,
+      items,
+    };
+    console.log(body);
     //title, items 넘기면됨.
   };
   const onImageItemSetting = (imageTitle, tags, i) => {
@@ -72,6 +78,9 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const onDragLeave = (e) => {
     e.preventDefault();
     labelRef.current.classList.remove(styles.is_over);
+  };
+  const selectHandler = (e) => {
+    setcategory(e.target.value);
   };
   useEffect(() => {
     for (let j = 0; j < items.length; j++) {
@@ -103,6 +112,23 @@ const ImageUpload = ({ name, maxImageNum }) => {
               setTitle(e.target.value);
             }}
           />
+          <div>
+            <div className="text-[18px] font-[700] mb-[20px]">카테고리</div>
+            <select
+              className="text-[18px] w-[100%] h-[30px] text-center mb-[20px] border border-black rounded-[8px]"
+              onChange={selectHandler}
+            >
+              <option value="남자 연예인">남자 연예인</option>
+              <option value="여자 연예인">여자 연예인</option>
+              <option value="음식">음식</option>
+              <option value="영화/만화">영화/만화</option>
+              <option value="드라마">드라마</option>
+              <option value="능력">능력</option>
+              <option value="게임">게임</option>
+              <option value="상황">상황</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
           <div className={styles.title}>이미지 업로드</div>
           <label
             onDragEnter={onDragEnter}
