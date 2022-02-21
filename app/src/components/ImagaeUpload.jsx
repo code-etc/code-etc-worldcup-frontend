@@ -83,6 +83,9 @@ const ImageUpload = ({ name, maxImageNum }) => {
     setcategory(e.target.value);
   };
   useEffect(() => {
+    window.onbeforeunload = function (e) {
+      return 0;
+    };
     for (let j = 0; j < items.length; j++) {
       items[j].id = j;
     }
