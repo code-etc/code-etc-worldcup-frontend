@@ -8,7 +8,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [category, setcategory] = useState("");
   const labelRef = useRef(null);
   const uploadFunc = (files) => {
-    if (maxImageNum === items.length) {
+    if (files.length + items.length > maxImageNum) {
       alert("후보자 개수 초과");
       return 0;
     }
