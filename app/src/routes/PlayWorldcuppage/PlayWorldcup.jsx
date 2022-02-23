@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PlayWorldcupCount from "./PlayWorldcupCount";
 import PlayWorldcupDatas from "./PlayWorldcupDatas";
+import PlayWorldcupWinner from "./PlayWorldcupWinner";
 
 const PlayWorldcup = () => {
   const [worldcupTitle, setWorldcupTitle] = useState("");
@@ -8,12 +9,14 @@ const PlayWorldcup = () => {
   const [worldcupCount, setWorldcupCount] = useState([]);
   const [clickWorldcup, setClickWorldcup] = useState("");
   const [nextMatchUrl, setNextMatchUrl] = useState("");
+  const [worldcupWinner, setWorldcupWinner] = useState("");
 
   useEffect(() => {
     getWorldcupDatas("/worldcup/play/wanttoeatmeat/1-3");
   }, []);
 
   useEffect(() => {
+    console.log("clickWorldcup");
     getWorldcupDatas(nextMatchUrl);
   }, [clickWorldcup]);
 
@@ -27,14 +30,22 @@ const PlayWorldcup = () => {
     setWorldcupCount(data.worldcupCount);
     setNextMatchUrl(data["next-match"]);
   };
-
+  console.log(worldcupWinner);
   return (
     <>
       <section className="min-w-[1024px] w-[100%] h-fit mainFont">
         <div className="w-[100%-100px]  mx-[50px]">
           <h2 className="text-[40px] w-fit m-auto">{worldcupTitle}</h2>
-          {worldcupTitle && <PlayWorldcupCount worldcupCount={worldcupCount} />}
-          {worldcupTitle && <PlayWorldcupDatas worldcupDatas={worldcupDatas} setClickWorldcup={setClickWorldcup} />}
+          {worldcupWinner && <PlayWorldcupWinner worldcupWinner={worldcupWinner} />}
+          {!worldcupWinner && worldcupTitle && <PlayWorldcupCount worldcupCount={worldcupCount} />}
+          {!worldcupWinner && worldcupTitle && (
+            <PlayWorldcupDatas
+              worldcupDatas={worldcupDatas}
+              setClickWorldcup={setClickWorldcup}
+              worldcupCount={worldcupCount}
+              setWorldcupWinner={setWorldcupWinner}
+            />
+          )}
         </div>
       </section>
     </>

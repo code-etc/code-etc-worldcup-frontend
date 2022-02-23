@@ -2,10 +2,12 @@ import React from "react";
 import PlayWorldcupData from "./PlayWorldcupData";
 import Versus from "./Versus";
 
-const PlayWorldcupDatas = ({ worldcupDatas, setClickWorldcup }) => {
-  const handleWorldcup = (event) => {
-    console.log(event);
-    setClickWorldcup(event.timeStamp);
+const PlayWorldcupDatas = ({ worldcupDatas, setClickWorldcup, worldcupCount, setWorldcupWinner }) => {
+  const chooseWorldcup = (event) => {
+    console.log(worldcupCount);
+    console.log(event.target);
+    console.log(worldcupDatas);
+    worldcupCount[0] !== worldcupCount[1] ? setClickWorldcup(event.timeStamp) : setWorldcupWinner(event.target);
   };
 
   return (
@@ -15,7 +17,7 @@ const PlayWorldcupDatas = ({ worldcupDatas, setClickWorldcup }) => {
           <>
             <PlayWorldcupData
               key={worldcupData.name}
-              handleWorldcup={handleWorldcup}
+              chooseWorldcup={chooseWorldcup}
               worldcupData={worldcupData}
               worldcupdataIndex={worldcupdataIndex}
             />
