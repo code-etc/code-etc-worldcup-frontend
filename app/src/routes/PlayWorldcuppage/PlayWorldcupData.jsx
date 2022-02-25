@@ -4,7 +4,13 @@ const PlayWorldcupData = ({ worldcupData, worldcupdataIndex, chooseWorldcup }) =
   return (
     <>
       <div className={"w-[50%] h-[700px] relative flex items-center"}>
-        <h3 className={"absolute text-[40px] text-sky-400 z-10 " + (worldcupdataIndex === 0 ? "right-40" : "left-40")}>
+        <h3
+          className={
+            "absolute text-[40px] text-sky-400 z-10 cursor-pointer " +
+            (worldcupdataIndex === 0 ? "right-40" : "left-40")
+          }
+          onClick={chooseWorldcup}
+        >
           {worldcupData.name}
         </h3>
         <img
