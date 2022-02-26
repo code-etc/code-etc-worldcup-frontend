@@ -1,9 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const PlayWorldcupWinner = ({ worldcupWinner }) => {
-  console.log(worldcupWinner);
-  const showWorldcupRank = () => {};
-
+const PlayWorldcupWinner = ({ worldcupWinner, worldcupKind }) => {
   return (
     <>
       <div className={"w-[100%] h-[700px] relative flex items-center"}>
@@ -12,9 +10,9 @@ const PlayWorldcupWinner = ({ worldcupWinner }) => {
         </h3>
         <img src={worldcupWinner.src} className="max-h-[100%] max-w-[100%] m-auto" alt={worldcupWinner.alt} />
       </div>
-      <p className="text-[40px] w-fit m-auto cursor-pointer" onClick={showWorldcupRank}>
-        랭킹보기
-      </p>
+      <Link to={"/worldcupRank/" + worldcupKind}>
+        <p className="text-[40px] w-fit m-auto cursor-pointer">랭킹보기</p>
+      </Link>
     </>
   );
 };

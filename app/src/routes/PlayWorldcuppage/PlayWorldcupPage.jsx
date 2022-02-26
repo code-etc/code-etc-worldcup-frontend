@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import PlayWorldcupCount from "./PlayWorldcupCount";
 import PlayWorldcupDatas from "./PlayWorldcupDatas";
 import PlayWorldcupWinner from "./PlayWorldcupWinner";
+import WorldcupTitle from "./WorldcupTitle";
 
 const PlayWorldcup = () => {
+  const [worldcupKind, setWorldcupKind] = useState("");
   const [worldcupTitle, setWorldcupTitle] = useState("");
   const [worldcupDatas, setWorldcupDatas] = useState([]);
   const [worldcupCount, setWorldcupCount] = useState([]);
@@ -12,31 +14,30 @@ const PlayWorldcup = () => {
   const [worldcupWinner, setWorldcupWinner] = useState("");
 
   useEffect(() => {
+    // 시작하기 버튼 누르면 여기서 시작
+    setWorldcupKind("wanttoeatmeat");
     getWorldcupDatas("/worldcup/play/wanttoeatmeat/1-3");
   }, []);
 
   useEffect(() => {
-    console.log("clickWorldcup");
     getWorldcupDatas(nextMatchUrl);
   }, [clickWorldcup]);
 
   const getWorldcupDatas = async (url) => {
-    console.log(url);
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
     setWorldcupTitle(data.title);
     setWorldcupDatas([...data.select]);
     setWorldcupCount(data.worldcupCount);
     setNextMatchUrl(data["next-match"]);
   };
-  console.log(worldcupWinner);
+
   return (
     <>
       <section className="min-w-[1024px] w-[100%] h-fit mainFont">
         <div className="w-[100%-100px]  mx-[50px]">
-          <h2 className="text-[40px] w-fit m-auto">{worldcupTitle}</h2>
-          {worldcupWinner && <PlayWorldcupWinner worldcupWinner={worldcupWinner} />}
+          <WorldcupTitle worldcupTitle={worldcupTitle} />
+          {worldcupWinner && <PlayWorldcupWinner worldcupWinner={worldcupWinner} worldcupKind={worldcupKind} />}
           {!worldcupWinner && worldcupTitle && <PlayWorldcupCount worldcupCount={worldcupCount} />}
           {!worldcupWinner && worldcupTitle && (
             <PlayWorldcupDatas

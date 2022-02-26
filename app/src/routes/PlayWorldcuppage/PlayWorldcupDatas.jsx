@@ -4,9 +4,6 @@ import Versus from "./Versus";
 
 const PlayWorldcupDatas = ({ worldcupDatas, setClickWorldcup, worldcupCount, setWorldcupWinner }) => {
   const chooseWorldcup = (event) => {
-    console.log(worldcupCount);
-    console.log(event.target);
-    console.log(worldcupDatas);
     worldcupCount[0] !== worldcupCount[1] ? setClickWorldcup(event.timeStamp) : setWorldcupWinner(event.target);
   };
 

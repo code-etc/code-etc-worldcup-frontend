@@ -101,10 +101,28 @@ const handlers = [
             winRate: "12",
           },
           {
-            name: "소고기",
+            name: "소고기1",
             picture:
               "https://images.unsplash.com/photo-1619719015339-133a130520f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
             winRate: "4",
+          },
+          {
+            name: "소고기2",
+            picture:
+              "https://images.unsplash.com/photo-1619719015339-133a130520f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+            winRate: "2",
+          },
+          {
+            name: "소고기3",
+            picture:
+              "https://images.unsplash.com/photo-1619719015339-133a130520f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+            winRate: "0.2",
+          },
+          {
+            name: "소고기4",
+            picture:
+              "https://images.unsplash.com/photo-1619719015339-133a130520f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+            winRate: "0.1",
           },
         ],
       }),
