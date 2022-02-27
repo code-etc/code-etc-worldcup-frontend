@@ -63,13 +63,13 @@ const MyPage = () => {
                 id="nickname"
                 className="mb-[5px] border-b-[2px] border-black"
                 type="text"
-                placeholder="거주지를 입력해주세요"
+                placeholder="별명를 입력해주세요"
               />
               <input
                 id="place"
                 className="mb-[5px] border-b-[2px] border-black"
                 type="text"
-                placeholder="별명을 입력해주세요"
+                placeholder="거주지를 입력해주세요"
               />
               <input id="age" className="border-b-[2px] border-black" type="text" placeholder="나이를 입력해주세요" />
             </div>
