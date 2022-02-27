@@ -1,7 +1,9 @@
 import React from "react";
 
 const Login = () => {
-  const loginKakao = () => {};
+  const loginKakao = () => {
+    window.location.href = "http://localhost:3000/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/callback";
+  };
   const loginGoogle = () => {};
   return (
     <>

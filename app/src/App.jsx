@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
+import Callback from "./routes/Callback";
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import MyPage from "./routes/MyPage";
@@ -15,6 +16,7 @@ const App = () => {
       <BrowserRouter>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
+        <Route path="/callback" component={Callback} />
         <Route path="/registerWorldcup" component={RegisterWorldcup} />
         <Route path="/registerSelect" component={RegisterSelect} />
         <Route path="/myPage" component={MyPage} />
