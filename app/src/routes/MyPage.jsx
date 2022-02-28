@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 const MyPage = () => {
   const [myWorldcupList, setMyWorldcupList] = useState([]);
+  const [mySelectList, setMySelectList] = useState([]);
   const [worldcupDisplay, setWorldcupDisplay] = useState(false);
   const [selectDisplay, setSelectDisplay] = useState(false);
   const refWorldcupBtn = useRef();
@@ -12,6 +13,11 @@ const MyPage = () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
     console.log(json);
     setMyWorldcupList(json);
+  };
+  const getMySelect = async () => {
+    const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
+    console.log(json);
+    setMySelectList(json);
   };
   const displayWorldcupHandler = () => {
     setWorldcupDisplay((prev) => !prev);
@@ -35,6 +41,7 @@ const MyPage = () => {
   }, [selectDisplay]);
   useEffect(() => {
     getMyWorldcup();
+    // getMySelect();
   }, []);
   return (
     <div className="mainFont">
@@ -75,7 +82,7 @@ const MyPage = () => {
             </div>
           </div>
           <div className="md:flex md:justify-between">
-            <div className="mb-[15px]">
+            <div className="mb-[15px] basis-2/5">
               <div className="flex justify-between">
                 <strong>내가 등록한 월드컵</strong>
                 <button
@@ -89,6 +96,8 @@ const MyPage = () => {
               </div>
               {worldcupDisplay ? (
                 <div>펼치기 클릭</div>
+              ) : myWorldcupList.length === 0 ? (
+                <div>등록한 월드컵이 없습니다.</div>
               ) : (
                 <ul ref={refWorldcupList} className="md:flex md:flex-wrap">
                   {myWorldcupList.map((item, i) => (
@@ -111,7 +120,7 @@ const MyPage = () => {
               )}
             </div>
 
-            <div className="mb-[15px]">
+            <div className="mb-[15px] basis-2/5">
               <div className="flex justify-between">
                 <strong>내가 등록한 대신정해주기</strong>
                 <button
@@ -125,9 +134,11 @@ const MyPage = () => {
               </div>
               {selectDisplay ? (
                 <div>펼치기 클릭</div>
+              ) : mySelectList.length === 0 ? (
+                <div>등록한 대신정해주기가 없습니다.</div>
               ) : (
                 <ul ref={refSelectList} className="md:flex md:flex-wrap">
-                  {myWorldcupList.map((item, i) => (
+                  {mySelectList.map((item, i) => (
                     <li
                       key={i}
                       className="flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]"
