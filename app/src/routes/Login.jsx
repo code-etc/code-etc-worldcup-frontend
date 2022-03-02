@@ -2,9 +2,13 @@ import React from "react";
 
 const Login = () => {
   const loginKakao = () => {
-    window.location.href = "http://localhost:3000/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/callback";
+    window.location.href =
+      "http://localhost:8080/oauth2/authorize/kakao?redirect_uri=http://localhost:3000/oauth2/redirect";
   };
-  const loginGoogle = () => {};
+  const loginGoogle = () => {
+    window.location.href =
+      "http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect";
+  };
   return (
     <>
       <div className="w-[450px] h-screen border-black border-2 m-auto">

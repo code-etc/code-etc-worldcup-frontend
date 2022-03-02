@@ -16,7 +16,7 @@ const App = () => {
       <BrowserRouter>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
-        <Route path="/callback" component={Callback} />
+        <Route path="/oauth2/redirect" component={Callback} />
         <Route path="/registerWorldcup" component={RegisterWorldcup} />
         <Route path="/registerSelect" component={RegisterSelect} />
         <Route path="/myPage" component={MyPage} />
