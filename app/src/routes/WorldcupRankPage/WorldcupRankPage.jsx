@@ -17,10 +17,11 @@ const WorldcupRankPage = ({ location }) => {
     setWorldcupTitle(data.title);
     setRankList(data.rankList);
   };
+
   return (
     <>
-      <section className="min-w-[1160px] w-[100%] h-full mainFont">
-        <div className="w-[1160px] m-auto">
+      <section className="xlw-[1280px] h-full mainFont">
+        <div className="xl:w-[1280px] m-auto">
           <WorldcupTitle worldcupTitle={worldcupTitle} rankPageTitle={rankPageTitle} />
           {rankList.map((rankElement, rankIndex) => (
             <WorldcupRankData key={rankElement.name} rankElement={rankElement} rankIndex={rankIndex} />
