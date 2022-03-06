@@ -15,8 +15,8 @@ const PlayWorldcup = () => {
 
   useEffect(() => {
     // 시작하기 버튼 누르면 여기서 시작
-    setWorldcupKind("wanttoeatmeat");
-    getWorldcupDatas("/worldcup/play/wanttoeatmeat/1-3");
+    setWorldcupKind("wanttogocity");
+    getWorldcupDatas("/worldcup/play/wanttogocity/1-4");
   }, []);
 
   useEffect(() => {
