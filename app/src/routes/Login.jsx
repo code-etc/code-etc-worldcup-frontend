@@ -11,7 +11,7 @@ const Login = () => {
   };
   return (
     <>
-      <div className="w-[450px] h-screen border-black border-2 m-auto">
+      <div className="w-[450px] h-screen border-black border-2 m-auto mainFont">
         <h1 className="w-fit text-[40px] mt-24 m-auto">로그인</h1>
         <div
           className="w-[280px] h-[60px] bg-[#F5E14C] rounded-xl mt-24 m-auto shadow-md cursor-pointer"
