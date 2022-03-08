@@ -45,7 +45,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   }, [tags]);
   return (
     <li className={styles.imageItem}>
-      <img className={styles.image} src={item.image} alt="item" />
+      <img className={styles.image} src={item.preview} alt="item" />
       <div className={styles.image_container}>
         <div>
           <div className={styles.titleAndButton}>

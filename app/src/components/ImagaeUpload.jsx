@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import ImageItem from "./ImageItem";
 import styles from "./ImageUpload.module.css";
-
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
-  const [category, setcategory] = useState("");
+  const [category, setcategory] = useState("남자 연예인");
   const labelRef = useRef(null);
+  let count = 0;
+  const [countState, setCountState] = useState(1);
+  const [isUpload, setIsUpload] = useState(false);
+  const history = useHistory();
   const uploadFunc = (files) => {
     if (files.length + items.length > maxImageNum) {
       alert("후보자 개수 초과");
@@ -21,12 +26,13 @@ const ImageUpload = ({ name, maxImageNum }) => {
         } = finishedEvnet;
         const item = {
           id: items.length,
-          image: result,
+          image: theFile,
+          preview: result,
           title: "",
           tags: [],
         };
         for (let i = 0; i < items.length; i++) {
-          if (items[i].image === item.image) {
+          if (items[i].preview === item.preview) {
             alert("같은 이미지는 올릴 수 없습니다.");
             return;
           }
@@ -40,8 +46,37 @@ const ImageUpload = ({ name, maxImageNum }) => {
     const {
       target: { files },
     } = event;
+    console.log("파일:", files[0]);
     uploadFunc(files);
     event.target.value = "";
+  };
+  const backUpload = (chain) => {
+    console.log("Count:", count);
+    const form = new FormData();
+    form.append("candidate", new Blob([JSON.stringify({ name: items[count].title })], { type: "application/json" }));
+    form.append("image", items[count].image);
+    axios
+      .post(chain, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((r) => {
+        console.log(r);
+        count++;
+        setCountState(count + 1);
+        if (count >= items.length) {
+          count = 0;
+          setCountState(count + 1);
+          setIsUpload(false);
+          alert("등록 완료");
+          history.push("/");
+          return;
+        } else {
+          backUpload(chain);
+        }
+      })
+      .catch((err) => console.log(err));
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -50,8 +85,41 @@ const ImageUpload = ({ name, maxImageNum }) => {
       category,
       items,
     };
+    if (title.length === 0) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (items.length <= 2 && name === "이상형 월드컵 등록") {
+      alert("후보자는 3개이상 입력해주세요.");
+      return;
+    }
+    if (items.length === 2 && name === "대신 정해주기 등록") {
+      alert("후보자를 두개 입력해주세요");
+      return;
+    }
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].title.length === 0) {
+        alert("후보자들의 제목을 입력해주세요.");
+        return;
+      }
+    }
     console.log(body);
-    //title, items 넘기면됨.
+    setIsUpload(true);
+    axios
+      .post("/games/strange-brother", {
+        title: title,
+        categories: [{ classifier: category }],
+      })
+      .then((res) => {
+        const chain = res.data._links.Chain.href.replace("http://localhost:8080", "");
+        console.log(chain);
+        backUpload(chain);
+      })
+      .catch((err) => {
+        alert("등록에 실패했습니다.");
+        console.log(err);
+      });
+    // title, items 넘기면됨.
   };
   const onImageItemSetting = (imageTitle, tags, i) => {
     setItems(items.map((item) => (item.id === i ? { ...item, title: imageTitle, tags } : item)));
@@ -92,6 +160,16 @@ const ImageUpload = ({ name, maxImageNum }) => {
   }, [items]);
   return (
     <>
+      {isUpload ? (
+        <>
+          <div className="mainFont fixed z-[50] top-[40px] left-[50%] translate-x-[-50%] w-[300px] h-[30px] text-center bg-white rounded-[4px]">
+            {"업로드 중... ( " + countState + " /" + items.length + " )"}
+          </div>
+          <div className="fixed z-[30] top-0 left-0 w-[100vw] h-[100vh] bg-slate-400 opacity-50"></div>
+        </>
+      ) : (
+        <></>
+      )}
       <form
         className={styles.container}
         onSubmit={onSubmit}
