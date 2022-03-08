@@ -117,6 +117,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
       })
       .catch((err) => {
         alert("등록에 실패했습니다.");
+        setIsUpload(false);
         console.log(err);
       });
     // title, items 넘기면됨.
