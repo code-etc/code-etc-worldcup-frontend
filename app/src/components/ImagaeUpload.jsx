@@ -9,6 +9,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [category, setcategory] = useState("남자 연예인");
   const labelRef = useRef(null);
   let count = 0;
+  let suceedCount = 0;
   const [countState, setCountState] = useState(1);
   const [isUpload, setIsUpload] = useState(false);
   const history = useHistory();
@@ -63,20 +64,35 @@ const ImageUpload = ({ name, maxImageNum }) => {
       })
       .then((r) => {
         console.log(r);
+        suceedCount++;
         count++;
         setCountState(count + 1);
         if (count >= items.length) {
           count = 0;
           setCountState(count + 1);
           setIsUpload(false);
-          alert("등록 완료");
+          alert(suceedCount + " / " + items.length + " 등록 완료");
           history.push("/");
           return;
         } else {
           backUpload(chain);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        count++;
+        setCountState(count + 1);
+        if (count >= items.length) {
+          count = 0;
+          setCountState(count + 1);
+          setIsUpload(false);
+          alert(suceedCount + " / " + items.length + " 등록 완료");
+          history.push("/");
+          return;
+        } else {
+          backUpload(chain);
+        }
+        console.log(err);
+      });
   };
   const onSubmit = (e) => {
     e.preventDefault();
