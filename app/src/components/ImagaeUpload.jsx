@@ -9,19 +9,31 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [category, setcategory] = useState("남자 연예인");
   const labelRef = useRef(null);
   let count = 0;
-  let suceedCount = 0;
   const [countState, setCountState] = useState(1);
   const [isUpload, setIsUpload] = useState(false);
   const history = useHistory();
   const uploadFunc = (files) => {
+    let tempItems = [];
+    let isSameImg = false;
+    const fileCount = files.length;
     if (files.length + items.length > maxImageNum) {
       alert("후보자 개수 초과");
       return 0;
     }
-    for (let i = 0; i < files.length; i++) {
+    for (let i = 0; i < fileCount; i++) {
+      if (isSameImg) {
+        console.log("isSameImg2", isSameImg);
+        break;
+      }
       const theFile = files[i];
+      console.log(theFile);
       const reader = new FileReader();
+      reader.readAsDataURL(theFile);
       reader.onloadend = (finishedEvnet) => {
+        if (isSameImg) {
+          console.log("isSameImg", isSameImg);
+          return;
+        }
         const {
           currentTarget: { result },
         } = finishedEvnet;
@@ -32,15 +44,23 @@ const ImageUpload = ({ name, maxImageNum }) => {
           title: "",
           tags: [],
         };
+        console.log("load");
+        console.log(theFile);
         for (let i = 0; i < items.length; i++) {
           if (items[i].preview === item.preview) {
+            isSameImg = true;
             alert("같은 이미지는 올릴 수 없습니다.");
             return;
           }
         }
-        setItems((prev) => [...prev, item]);
+
+        tempItems[i] = item;
+
+        if (i === fileCount - 1) {
+          //끝날때
+          setItems((prev) => [...prev, ...tempItems]);
+        }
       };
-      reader.readAsDataURL(theFile);
     }
   };
   const onImageSelect = (event) => {
@@ -64,38 +84,24 @@ const ImageUpload = ({ name, maxImageNum }) => {
       })
       .then((r) => {
         console.log(r);
-        suceedCount++;
         count++;
         setCountState(count + 1);
         if (count >= items.length) {
           count = 0;
           setCountState(count + 1);
           setIsUpload(false);
-          alert(suceedCount + " / " + items.length + " 등록 완료");
+          alert("등록 완료");
           history.push("/");
           return;
         } else {
           backUpload(chain);
         }
       })
-      .catch((err) => {
-        count++;
-        setCountState(count + 1);
-        if (count >= items.length) {
-          count = 0;
-          setCountState(count + 1);
-          setIsUpload(false);
-          alert(suceedCount + " / " + items.length + " 등록 완료");
-          history.push("/");
-          return;
-        } else {
-          backUpload(chain);
-        }
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("submit");
     const body = {
       title,
       category,
@@ -122,12 +128,12 @@ const ImageUpload = ({ name, maxImageNum }) => {
     console.log(body);
     setIsUpload(true);
     axios
-      .post("/games/strange-brother", {
+      .post("http://host.docker.internal:8080/games/strange-brother", {
         title: title,
         categories: [{ classifier: category }],
       })
       .then((res) => {
-        const chain = res.data._links.Chain.href.replace("http://localhost:8080", "");
+        const chain = res.data._links.Chain.href.replace("http://localhost:8080", "http://host.docker.internal:8080");
         console.log(chain);
         backUpload(chain);
       })
