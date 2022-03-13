@@ -12,6 +12,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [countState, setCountState] = useState(1);
   const [isUpload, setIsUpload] = useState(false);
   const history = useHistory();
+  const refCategory = useRef();
   const uploadFunc = (files) => {
     let tempItems = [];
     let isSameImg = false;
@@ -212,6 +213,13 @@ const ImageUpload = ({ name, maxImageNum }) => {
             className={styles.title_input}
             type="text"
             value={title}
+            onKeyDown={(e) => {
+              console.log(e.key);
+              if (e.key === "Enter") {
+                e.preventDefault();
+                refCategory.current.focus();
+              }
+            }}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -221,6 +229,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
             <select
               className="text-[18px] w-[100%] h-[30px] text-center mb-[20px] border border-black rounded-[8px]"
               onChange={selectHandler}
+              ref={refCategory}
             >
               <option value="남자 연예인">남자 연예인</option>
               <option value="여자 연예인">여자 연예인</option>

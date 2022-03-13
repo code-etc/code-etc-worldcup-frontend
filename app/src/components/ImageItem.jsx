@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./ImageItem.module.css";
 const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   const [tags, setTags] = useState(item.tags);
   const [tagInput, setTagInput] = useState("");
+  const refTag = useRef();
   const onChangeInput = (e) => {
     onImageItemSetting(e.target.value, item.tags, i);
   };
@@ -50,7 +51,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
         <div>
           <div className={styles.titleAndButton}>
             <div className={styles.imageTitle}>이미지 설명</div>
-            <button className={styles.deleteButton} onClick={onDeleteBtn}>
+            <button type="button" className={styles.deleteButton} onClick={onDeleteBtn} tabIndex={-1}>
               삭제
             </button>
           </div>
@@ -60,6 +61,13 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             type="text"
             value={item.title}
             onChange={onChangeInput}
+            onKeyDown={(e) => {
+              console.log(e.key);
+              if (e.key === "Enter") {
+                e.preventDefault();
+                refTag.current.focus();
+              }
+            }}
           />
         </div>
         <div>
@@ -67,6 +75,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
           <div className="flex text-[12px] border-solid border-b-[1px] border-black">
             <span className="">#</span>
             <textarea
+              ref={refTag}
               className={styles.imageTag_input}
               placeholder="태그"
               value={tagInput}
@@ -78,7 +87,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
           <ul className="flex flex-wrap">
             {item.tags.map((tag, i) => (
               <li className="flex text-[12px] bg-slate-200 mb-[2px] mr-[5px] pr-[2px] pl-[2px] rounded-[4px]" key={i}>
-                <button id={i} onClick={onDeleteTagBtn}>
+                <button type="button" id={i} onClick={onDeleteTagBtn}>
                   {"#" + tag}
                 </button>
               </li>
