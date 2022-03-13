@@ -186,7 +186,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
     <>
       {isUpload ? (
         <>
-          <div className="mainFont fixed z-[50] top-[40px] left-[50%] translate-x-[-50%] w-[300px] h-[30px] text-center bg-white rounded-[4px]">
+          <div className="mainFont fixed z-[50] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[300px] h-[30px] text-center bg-white rounded-[4px]">
             {"업로드 중... ( " + countState + " /" + items.length + " )"}
           </div>
           <div className="fixed z-[30] top-0 left-0 w-[100vw] h-[100vh] bg-slate-400 opacity-50"></div>
