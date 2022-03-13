@@ -34,7 +34,7 @@ const PlayWorldcup = () => {
 
   return (
     <>
-      <section className="min-w-[1024px] w-[100%] h-fit mainFont">
+      <section className="min-w-[640px] w-[100%] h-screen mainFont">
         <div className="w-[100%-100px]  mx-[50px]">
           <WorldcupTitle worldcupTitle={worldcupTitle} />
           {worldcupWinner && <PlayWorldcupWinner worldcupWinner={worldcupWinner} worldcupKind={worldcupKind} />}

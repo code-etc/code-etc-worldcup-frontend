@@ -14,7 +14,7 @@ const WorldcupRankData = ({ rankElement, rankIndex }) => {
             </p>
             <img
               src={rankElement.picture}
-              className="xl:w-[400px] xl:h-[400px] sm:w-[200px] sm:h-[200px] w-[150px] h-[150px]"
+              className="xl:w-[400px] xl:h-[400px] lg:w-[200px] lg:h-[200px] w-[150px] h-[150px]"
               alt={rankElement.name}
             />
             <div className="flex flex-col">
