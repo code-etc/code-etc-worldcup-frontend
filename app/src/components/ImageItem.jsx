@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ImageItem.module.css";
 const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
-  const [tags, setTags] = useState(item.tags);
+  const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const refTag = useRef();
+  useEffect(() => {
+    setTags(item.tags);
+  }, []);
   const onChangeInput = (e) => {
     onImageItemSetting(e.target.value, item.tags, i);
   };

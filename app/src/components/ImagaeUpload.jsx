@@ -75,8 +75,18 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const backUpload = (chain) => {
     console.log("Count:", count);
     const form = new FormData();
-    form.append("candidate", new Blob([JSON.stringify({ name: items[count].title })], { type: "application/json" }));
+    console.log(items[count].title);
+    let tagsObj = [];
+    for (let i = 0; i < items[count].tags.length; i++) {
+      tagsObj[i] = { classifier: items[count].tags[i] };
+    }
+    console.log(JSON.stringify({ name: items[count].title, tags: tagsObj }));
+    form.append(
+      "candidate",
+      new Blob([JSON.stringify({ name: items[count].title, tags: tagsObj })], { type: "application/json" }),
+    );
     form.append("image", items[count].image);
+    console.log(form.get("candidate"));
     axios
       .post(chain, form, {
         headers: {
@@ -98,7 +108,10 @@ const ImageUpload = ({ name, maxImageNum }) => {
           backUpload(chain);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsUpload(false);
+      });
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -129,12 +142,15 @@ const ImageUpload = ({ name, maxImageNum }) => {
     console.log(body);
     setIsUpload(true);
     axios
-      .post("http://host.docker.internal:8080/games/strange-brother", {
+      .post("/games/strange-brother", {
         title: title,
         categories: [{ classifier: category }],
       })
       .then((res) => {
-        const chain = res.data._links.Chain.href.replace("http://localhost:8080", "http://host.docker.internal:8080");
+        console.log(res.data._links["register-candidate"].href);
+        const chain = res.data._links["register-candidate"].href
+          .replace("http://localhost:8080", "")
+          .replace("http://host.docker.internal:8080", "");
         console.log(chain);
         backUpload(chain);
       })
@@ -267,9 +283,13 @@ const ImageUpload = ({ name, maxImageNum }) => {
 
           <div className={styles.title}>이미지 정보 추가</div>
           <ul className={styles.imageList}>
-            {items.map((item, i) => (
-              <ImageItem key={i} item={item} i={i} onImageItemSetting={onImageItemSetting} deleteItem={deleteItem} />
-            ))}
+            {items ? (
+              items.map((item, i) => (
+                <ImageItem key={i} item={item} i={i} onImageItemSetting={onImageItemSetting} deleteItem={deleteItem} />
+              ))
+            ) : (
+              <></>
+            )}
           </ul>
         </main>
       </form>
