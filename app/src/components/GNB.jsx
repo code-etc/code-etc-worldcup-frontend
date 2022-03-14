@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styles from "./GNB.module.css";
 import { HiMenu } from "react-icons/hi";
-const GNB = () => {
+const GNB = ({ isLogin }) => {
   const sidebarRef = useRef(null);
   const overlayRef = useRef(null);
   return (
@@ -22,9 +22,7 @@ const GNB = () => {
         </button>
         <ul ref={sidebarRef} className={styles.sidebar}>
           <strong className={styles.logo}>Strange Brother World Cup</strong>
-          <li>
-            <a href="/login">로그인</a>
-          </li>
+          <li>{isLogin ? <a href="/logout">로그아웃</a> : <a href="/login">로그인</a>}</li>
           <li>
             <a href="/registerWorldcup">월드컵 등록</a>
           </li>
@@ -39,10 +37,7 @@ const GNB = () => {
         {/* Tablet or Desktop */}
         <ul className={styles.nav_right}>
           <strong className={styles.logo}>Strange Brother World Cup</strong>
-
-          <li>
-            <a href="/login">로그인</a>
-          </li>
+          <li>{isLogin ? <a href="/logout">로그아웃</a> : <a href="/login">로그인</a>}</li>
           <li>
             <a href="/registerWorldcup">월드컵 등록</a>
           </li>
