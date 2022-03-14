@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import cookies from "react-cookies";
+import axios from "axios";
+import jwt from "jwt-decode";
 import { AiOutlineCaretDown } from "react-icons/ai";
+import { useHistory } from "react-router-dom";
 const MyPage = () => {
   const [myWorldcupList, setMyWorldcupList] = useState([]);
   const [mySelectList, setMySelectList] = useState([]);
@@ -12,6 +16,7 @@ const MyPage = () => {
   const refSelectBtn = useRef();
   const refWorldcupList = useRef();
   const refSelectList = useRef();
+  const history = useHistory();
   const getMyWorldcup = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
     console.log(json);
@@ -29,10 +34,32 @@ const MyPage = () => {
     setSelectDisplay((prev) => !prev);
   };
   const getUser = () => {
+    const token = cookies.load("refresh-token");
+    console.log(token);
+    if (token) {
+      const decode = jwt(token);
+      console.log(decode);
+      axios
+        .get(`/accounts/${decode.username}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setNickname(res.data.username);
+          setPlace(res.data.address ? res.data.address : "");
+          setAge(res.data.age ? res.data.age : "");
+        })
+        .catch((err) => {
+          console.log("123");
+          history.push("/login");
+        });
+    } else {
+      console.log("노쿠키");
+      history.push("/login");
+    }
     // 유저 정보 호출
-    setNickname("김대환");
-    setPlace("부산");
-    setAge(25);
   };
   const nicknameHandler = (e) => {
     setNickname(e.target.value);
@@ -44,6 +71,9 @@ const MyPage = () => {
     setAge(e.target.value);
   };
   const onClickInput = (e) => {
+    e.preventDefault();
+  };
+  const submitHandler = (e) => {
     e.preventDefault();
   };
   useEffect(() => {
@@ -67,7 +97,7 @@ const MyPage = () => {
   }, []);
   return (
     <div className="mainFont">
-      <form className="py-[40px] px-[30px]" action="">
+      <form className="py-[40px] px-[30px]" onSubmit={submitHandler}>
         <header className="flex justify-between text-[18px] font-[700] mb-[30px]">
           <strong>마이 페이지</strong>
           <button className="text-[#0554f2]" type="submit">
