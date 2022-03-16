@@ -12,6 +12,7 @@ const PlayWorldcup = () => {
   const [clickWorldcup, setClickWorldcup] = useState("");
   const [nextMatchUrl, setNextMatchUrl] = useState("");
   const [worldcupWinner, setWorldcupWinner] = useState("");
+  const [chooseCandiate, setChooseCandiate] = useState(false);
 
   useEffect(() => {
     // 시작하기 버튼 누르면 여기서 시작
@@ -26,6 +27,7 @@ const PlayWorldcup = () => {
   const getWorldcupDatas = async (url) => {
     const response = await fetch(url);
     const data = await response.json();
+    setChooseCandiate(false);
     setWorldcupTitle(data.title);
     setWorldcupDatas([...data.select]);
     setWorldcupCount(data.worldcupCount);
@@ -45,6 +47,8 @@ const PlayWorldcup = () => {
               setClickWorldcup={setClickWorldcup}
               worldcupCount={worldcupCount}
               setWorldcupWinner={setWorldcupWinner}
+              setChooseCandiate={setChooseCandiate}
+              chooseCandiate={chooseCandiate}
             />
           )}
         </div>
