@@ -18,7 +18,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   console.log("develop");
   useEffect(() => {
-    const token = cookies.load("refresh-token");
+    const token = cookies.load("access-token");
     if (token) {
       axios
         .post(
@@ -33,7 +33,7 @@ const App = () => {
           },
         )
         .then((res) => {
-          cookies.save("refresh-token", res.data.token);
+          cookies.save("access-token", res.data.token);
           setIsLoading(false);
           setIsLogin(true);
         })
@@ -46,7 +46,7 @@ const App = () => {
       setIsLoading(false);
       setIsLogin(false);
     }
-  }, [cookies.load("refresh-token")]);
+  }, [cookies.load("access-token")]);
   return (
     <>
       {isLoading ? (

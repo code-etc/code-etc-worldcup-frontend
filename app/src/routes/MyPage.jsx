@@ -17,6 +17,7 @@ const MyPage = () => {
   const refWorldcupList = useRef();
   const refSelectList = useRef();
   const history = useHistory();
+  const [userId, setUserId] = useState();
   const getMyWorldcup = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
     console.log(json);
@@ -34,7 +35,7 @@ const MyPage = () => {
     setSelectDisplay((prev) => !prev);
   };
   const getUser = () => {
-    const token = cookies.load("refresh-token");
+    const token = cookies.load("access-token");
     console.log(token);
     if (token) {
       const decode = jwt(token);
@@ -48,16 +49,19 @@ const MyPage = () => {
         .then((res) => {
           console.log(res);
           setNickname(res.data.username);
-          setPlace(res.data.address ? res.data.address : "");
+          setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
+          setUserId(res.data.userId);
         })
         .catch((err) => {
-          console.log("123");
+          console.log(err);
+          cookies.remove("access-token");
+          cookies.remove("refresh-token");
           history.push("/login");
         });
     } else {
       console.log("노쿠키");
-      history.push("/login");
+      // history.push("/login");
     }
     // 유저 정보 호출
   };
@@ -75,6 +79,34 @@ const MyPage = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    const decode = jwt(cookies.load("access-token"));
+    axios
+      .put(
+        `/accounts/${userId}`,
+        JSON.stringify({
+          username: nickname,
+          age: age,
+          address: {
+            district: place,
+          },
+          provider: decode.provider,
+          role: decode.role,
+        }),
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${cookies.load("access-token")}`,
+          },
+        },
+      )
+      .then((res) => {
+        console.log("수정완료", res);
+        setNickname(res.data.username);
+        setPlace(res.data.address ? res.data.address.district : "");
+        setAge(res.data.age ? res.data.age : "");
+        alert("수정완료");
+      })
+      .catch((err) => console.log("수정실패", err));
   };
   useEffect(() => {
     if (worldcupDisplay) {
