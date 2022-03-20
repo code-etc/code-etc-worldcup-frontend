@@ -49,7 +49,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   }, [tags]);
   return (
     <li className={styles.imageItem}>
-      <img className={styles.image} src={item.preview} alt="item" />
+      <img className={styles.image} src={item ? item.preview : ""} alt="item" />
       <div className={styles.image_container}>
         <div>
           <div className={styles.titleAndButton}>
@@ -62,7 +62,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             className={styles.imageTitle_input}
             placeholder="설명"
             type="text"
-            value={item.title}
+            value={item ? item.title : ""}
             onChange={onChangeInput}
             onKeyDown={(e) => {
               console.log(e.key);
@@ -88,13 +88,17 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             />
           </div>
           <ul className="flex flex-wrap">
-            {item.tags.map((tag, i) => (
-              <li className="flex text-[12px] bg-slate-200 mb-[2px] mr-[5px] pr-[2px] pl-[2px] rounded-[4px]" key={i}>
-                <button type="button" id={i} onClick={onDeleteTagBtn}>
-                  {"#" + tag}
-                </button>
-              </li>
-            ))}
+            {item.tags ? (
+              item.tags.map((tag, i) => (
+                <li className="flex text-[12px] bg-slate-200 mb-[2px] mr-[5px] pr-[2px] pl-[2px] rounded-[4px]" key={i}>
+                  <button type="button" id={i} onClick={onDeleteTagBtn}>
+                    {"#" + tag}
+                  </button>
+                </li>
+              ))
+            ) : (
+              <></>
+            )}
           </ul>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ImageItem from "./ImageItem";
 import styles from "./ImageUpload.module.css";
 import axios from "axios";
+import cookies from "react-cookies";
 import { useHistory } from "react-router-dom";
 const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
@@ -90,6 +91,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
     axios
       .post(chain, form, {
         headers: {
+          Authorization: `Bearer ${cookies.load("access-token")}`,
           "Content-Type": "multipart/form-data",
         },
       })
@@ -142,16 +144,27 @@ const ImageUpload = ({ name, maxImageNum }) => {
     console.log(body);
     setIsUpload(true);
     axios
-      .post("/games/strange-brother", {
-        title: title,
-        categories: [{ classifier: category }],
-      })
+      .post(
+        "/games/strange-brother",
+        JSON.stringify({
+          title: title,
+          categories: [{ classifier: category }],
+        }),
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.load("access-token")}`,
+            "Content-type": "application/json",
+          },
+        },
+      )
       .then((res) => {
+        console.log(res);
         console.log(res.data._links["register-candidate"].href);
-        const chain = res.data._links["register-candidate"].href
-          .replace("http://localhost:8080", "")
-          .replace("http://host.docker.internal:8080", "");
-        console.log(chain);
+        const chain = res.data._links["register-candidate"].href.substring(
+          res.data._links["register-candidate"].href.search("/games"),
+          res.data._links["register-candidate"].href.length,
+        );
+        console.log("chain", chain);
         backUpload(chain);
       })
       .catch((err) => {
