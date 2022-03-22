@@ -12,11 +12,15 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const [place, setPlace] = useState("");
   const [age, setAge] = useState(0);
+  const [isModify, setIsModify] = useState(false);
   const refWorldcupBtn = useRef();
   const refSelectBtn = useRef();
   const refWorldcupList = useRef();
   const refSelectList = useRef();
   const history = useHistory();
+  const inputNickNameRef = useRef();
+  const inputPlaceRef = useRef();
+  const inputAgeRef = useRef();
   const [userId, setUserId] = useState();
   const getMyWorldcup = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
@@ -79,35 +83,45 @@ const MyPage = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    const decode = jwt(cookies.load("access-token"));
-    axios
-      .put(
-        `/accounts/${userId}`,
-        JSON.stringify({
-          username: nickname,
-          age: age,
-          address: {
-            district: place,
+    if (isModify) {
+      const decode = jwt(cookies.load("access-token"));
+      axios
+        .put(
+          `/accounts/${userId}`,
+          JSON.stringify({
+            username: nickname,
+            age: age,
+            address: {
+              district: place,
+            },
+            provider: decode.provider,
+            role: decode.role,
+          }),
+          {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${cookies.load("access-token")}`,
+            },
           },
-          provider: decode.provider,
-          role: decode.role,
-        }),
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${cookies.load("access-token")}`,
-          },
-        },
-      )
-      .then((res) => {
-        console.log("수정완료", res);
-        setNickname(res.data.username);
-        setPlace(res.data.address ? res.data.address.district : "");
-        setAge(res.data.age ? res.data.age : "");
-        alert("수정완료");
-      })
-      .catch((err) => console.log("수정실패", err));
+        )
+        .then((res) => {
+          console.log("수정완료", res);
+          setNickname(res.data.username);
+          setPlace(res.data.address ? res.data.address.district : "");
+          setAge(res.data.age ? res.data.age : "");
+          alert("수정완료");
+        })
+        .catch((err) => console.log("수정실패", err));
+      setIsModify(false);
+    } else {
+      setIsModify(true);
+    }
   };
+  useEffect(() => {
+    if (isModify) {
+      inputNickNameRef.current.focus();
+    }
+  }, [isModify]);
   useEffect(() => {
     if (worldcupDisplay) {
       refWorldcupBtn.current.classList.remove("rotate-180");
@@ -132,8 +146,11 @@ const MyPage = () => {
       <form className="py-[40px] px-[30px]" onSubmit={submitHandler}>
         <header className="flex justify-between text-[18px] font-[700] mb-[30px]">
           <strong>마이 페이지</strong>
-          <button className="text-[#0554f2]" type="submit">
-            수정하기
+          <button
+            className="text-[#0554f2] active:opacity-[60%] hover:opacity-[60%] ease-in-out	duration-200"
+            type="submit"
+          >
+            {isModify ? "수정완료" : "수정하기"}
           </button>
         </header>
 
@@ -147,15 +164,22 @@ const MyPage = () => {
                 >
                   별명
                 </label>
-                <div className="text-[8px] mt-[-4px] md:text-[12px] md:mt-[-6px]">클릭해서 수정</div>
               </div>
               <input
                 id="nickname"
-                className="mb-[5px] border-b-[2px] border-black pointer-events-none"
+                className={"mb-[5px] border-b-[2px] border-black" + (isModify ? "" : " pointer-events-none")}
                 type="text"
                 placeholder="별명를 입력해주세요"
                 value={nickname}
+                ref={inputNickNameRef}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter") {
+                    e.preventDefault();
+                    inputPlaceRef.current.focus();
+                  }
+                }}
                 onChange={nicknameHandler}
+                disabled={isModify ? false : true}
               />
             </div>
 
@@ -167,15 +191,22 @@ const MyPage = () => {
                 >
                   거주지
                 </label>
-                <div className="text-[8px] mt-[-4px] md:text-[12px] md:mt-[-6px]">클릭해서 수정</div>
               </div>
               <input
                 id="place"
-                className="mb-[5px] border-b-[2px] border-black pointer-events-none"
+                className={"mb-[5px] border-b-[2px] border-black" + (isModify ? "" : " pointer-events-none")}
                 type="text"
                 placeholder="거주지를 입력해주세요"
                 value={place}
+                ref={inputPlaceRef}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter") {
+                    e.preventDefault();
+                    inputAgeRef.current.focus();
+                  }
+                }}
                 onChange={placeHandler}
+                disabled={isModify ? false : true}
               />
             </div>
 
@@ -187,15 +218,16 @@ const MyPage = () => {
                 >
                   나이
                 </label>
-                <div className="text-[8px] mt-[-4px] md:text-[12px] md:mt-[-6px]">클릭해서 수정</div>
               </div>
               <input
                 id="age"
-                className="border-b-[2px] border-black pointer-events-none"
+                className={"border-b-[2px] border-black" + (isModify ? "" : " pointer-events-none")}
                 type="number"
                 placeholder="나이를 입력해주세요"
                 value={age}
+                ref={inputAgeRef}
                 onChange={ageHandler}
+                disabled={isModify ? false : true}
               />
             </div>
           </div>
