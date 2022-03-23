@@ -24,13 +24,15 @@
   height: var(--item-height);
   color: black;
   text-align: center;
-  background-color: rgba(200, 200, 200);
+  background-color: rgba(255, 255, 255);
   border-radius: 3%;
   background-size: cover;
 }
 .slide_item::before {
   content: "";
   opacity: 0.5;
+  border-radius: 3%;
+
   position: absolute;
   top: 0px;
   left: 0px;
