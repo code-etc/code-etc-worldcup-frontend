@@ -8,7 +8,6 @@ const Slide = ({ datas }) => {
   const [itemIndex, setItemIndex] = useState(0);
   const first = useRef(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [rendering, setRendering] = useState(false);
   const isTouching = useRef(false);
   const isButtonClick = useRef(false);
   const touchStartPoint = useRef({
@@ -52,7 +51,7 @@ const Slide = ({ datas }) => {
     timeoutRef.current = setInterval(() => {
       setItemIndex((prev) => prev + 1);
       console.log("hi");
-    }, 3000);
+    }, 5000);
   }, []);
   useEffect(() => {
     console.log(itemIndex);
@@ -61,7 +60,7 @@ const Slide = ({ datas }) => {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setInterval(() => {
         setItemIndex((prev) => prev + 1);
-      }, 3000);
+      }, 5000);
       isButtonClick.current = false;
     }
     if (first.current) {
@@ -96,38 +95,42 @@ const Slide = ({ datas }) => {
           ref={ulRef}
         >
           {datas.map((data) => (
-            <BackgroundImage
-              src={data.thumbnail}
-              ref={liRef}
-              key={data.id}
-              className={styles.slide_item}
-              renderLoader={({ hasLoaded, hasFailed }) => {
-                if (hasLoaded) {
-                  loadCount++;
-                  if (loadCount === datas.length) {
-                    setIsLoading(false);
-                    console.log(datas.length, loadCount);
-                  }
-                }
-              }}
-            >
-              {isLoading ? (
-                <div className="text-white absolute">로딩중</div>
-              ) : (
-                <>
-                  <strong className={styles.title}>{data.title}</strong>
-                  <div className={styles.button_container}>
-                    <a className={styles.start_button} href="/">
-                      시작하기
-                    </a>
-                    <a className={styles.rank_button} href="/">
-                      랭킹보기
-                    </a>
-                  </div>
-                  <div className={styles.author}>Made by:{data.author}</div>
-                </>
-              )}
-            </BackgroundImage>
+            <li>
+              <a href="/">
+                <BackgroundImage
+                  src={data.thumbnail}
+                  ref={liRef}
+                  key={data.id}
+                  className={styles.slide_item}
+                  renderLoader={({ hasLoaded, hasFailed }) => {
+                    if (hasLoaded) {
+                      loadCount++;
+                      if (loadCount === datas.length) {
+                        setIsLoading(false);
+                        console.log(datas.length, loadCount);
+                      }
+                    }
+                  }}
+                >
+                  {isLoading ? (
+                    <div className="text-white absolute">로딩중</div>
+                  ) : (
+                    <>
+                      <strong className={styles.title}>{data.title}</strong>
+                      <div className={styles.button_container}>
+                        <a className={styles.start_button} href="/">
+                          시작하기
+                        </a>
+                        <a className={styles.rank_button} href="/">
+                          랭킹보기
+                        </a>
+                      </div>
+                      <div className={styles.author}>Made by:{data.author}</div>
+                    </>
+                  )}
+                </BackgroundImage>
+              </a>
+            </li>
           ))}
         </ul>
         <button
@@ -150,6 +153,32 @@ const Slide = ({ datas }) => {
         >
           {">"}
         </button>
+      </div>
+
+      <div className="flex items-center	justify-center">
+        <ul className="flex">
+          {datas.map((data, i) => (
+            <li>
+              <button
+                type="button"
+                className={
+                  "block w-[12px] h-[12px] bg-slate-300 rounded-full mr-[2px] md:w-[14px] md:h-[14px] md:mr-[4px]" +
+                  (itemIndex <= i && itemIndex + VISIBLE_NUMBER - 1 >= i ? " bg-black" : "")
+                }
+                key={i}
+                onClick={(e) => {
+                  e.preventDefault();
+                  isButtonClick.current = true;
+                  if (datas.length - VISIBLE_NUMBER < i) {
+                    setItemIndex(datas.length - VISIBLE_NUMBER);
+                  } else {
+                    setItemIndex(i);
+                  }
+                }}
+              ></button>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
