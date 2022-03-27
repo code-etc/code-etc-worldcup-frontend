@@ -4,7 +4,6 @@ import WorldcupLoadingImage from "./WorldcupLoadingImage";
 const WorldcupImage = lazy(() => import("./WorldcupImage"));
 
 const PlayWorldcupData = ({ worldcupData, chooseCandidate }) => {
-  console.log(worldcupData);
   return (
     <>
       <div className="flex 2xl:w-[780px] 2xl:h-[700px] xl:w-[580px] xl:h-[500px] lg:w-[480px] lg:h-[400px] w-[270px] h-[200px] flex-col m-auto ">

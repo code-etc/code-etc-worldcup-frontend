@@ -12,13 +12,13 @@ const handlers = [
           {
             name: "서울",
             picture:
-              "https://images.unsplash.com/photo-1532085755448-a67fd3b518b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1532085755448-a67fd3b518b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
           {
             name: "도쿄",
             picture:
-              "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
         ],
@@ -37,13 +37,13 @@ const handlers = [
           {
             name: "뉴욕",
             picture:
-              "https://images.unsplash.com/photo-1510673354311-c81bb8506fc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1510673354311-c81bb8506fc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
           {
             name: "홍콩",
             picture:
-              "https://images.unsplash.com/photo-1558281686-c8514528eab0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1558281686-c8514528eab0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
         ],
@@ -62,7 +62,7 @@ const handlers = [
           {
             name: "런던",
             picture:
-              "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
         ],
@@ -81,13 +81,13 @@ const handlers = [
           {
             name: "서울",
             picture:
-              "https://images.unsplash.com/photo-1532085755448-a67fd3b518b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1532085755448-a67fd3b518b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
           {
             name: "뉴욕",
             picture:
-              "https://images.unsplash.com/photo-1510673354311-c81bb8506fc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+              "https://images.unsplash.com/photo-1510673354311-c81bb8506fc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&width=780&height=700",
             tagList: "",
           },
         ],
