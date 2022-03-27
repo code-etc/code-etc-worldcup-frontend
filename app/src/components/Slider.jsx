@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BackgroundImage } from "react-image-and-background-image-fade";
-import styles from "./Slider.module.css";
 const Slide = ({ datas }) => {
+  const itemWidth = 400;
+  const itemHeight = 250;
+  const itemMargin = 60;
   const ulRef = useRef(null);
   const liRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -74,9 +76,9 @@ const Slide = ({ datas }) => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className={`relative w-[100%] h-[250px] mt-[40px] mb-[10px] overflow-hidden`}>
         <ul
-          className={styles.slide_list}
+          className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
           onTouchStart={(e) => {
             touchStartPoint.current.x = e.changedTouches[0].clientX;
             touchStartPoint.current.y = e.changedTouches[0].clientY;
@@ -95,13 +97,13 @@ const Slide = ({ datas }) => {
           ref={ulRef}
         >
           {datas.map((data) => (
-            <li>
+            <li key={data.id}>
               <a href="/">
                 <BackgroundImage
                   src={data.thumbnail}
                   ref={liRef}
                   key={data.id}
-                  className={styles.slide_item}
+                  className={`flex flex-col relative items-center justify-center w-[100vw] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover sm:w-[400px] sm:mr-[60px] before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
                   renderLoader={({ hasLoaded, hasFailed }) => {
                     if (hasLoaded) {
                       loadCount++;
@@ -116,16 +118,26 @@ const Slide = ({ datas }) => {
                     <div className="text-white absolute">로딩중</div>
                   ) : (
                     <>
-                      <strong className={styles.title}>{data.title}</strong>
-                      <div className={styles.button_container}>
-                        <a className={styles.start_button} href="/">
+                      <strong className="text-white mb-[20px] font-[800] text-[24px] z-[100] text-stroke-black text-stroke">
+                        {data.title}
+                      </strong>
+                      <div className="flex">
+                        <a
+                          className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
+                          href="/"
+                        >
                           시작하기
                         </a>
-                        <a className={styles.rank_button} href="/">
+                        <a
+                          className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
+                          href="/"
+                        >
                           랭킹보기
                         </a>
                       </div>
-                      <div className={styles.author}>Made by:{data.author}</div>
+                      <div className="absolute right-[10px] bottom-[10px] text-white z-[100] text-stroke-black text-stroke">
+                        Made by:{data.author}
+                      </div>
                     </>
                   )}
                 </BackgroundImage>
@@ -134,7 +146,7 @@ const Slide = ({ datas }) => {
           ))}
         </ul>
         <button
-          className={styles.prev}
+          className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 left-0"
           type="button"
           onClick={() => {
             isButtonClick.current = true;
@@ -144,7 +156,7 @@ const Slide = ({ datas }) => {
           {"<"}
         </button>
         <button
-          className={styles.next}
+          className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 right-0"
           type="button"
           onClick={() => {
             isButtonClick.current = true;
@@ -158,7 +170,7 @@ const Slide = ({ datas }) => {
       <div className="flex items-center	justify-center">
         <ul className="flex">
           {datas.map((data, i) => (
-            <li>
+            <li key={i}>
               <button
                 type="button"
                 className={
