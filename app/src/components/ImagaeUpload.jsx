@@ -105,7 +105,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
           setIsUpload(false);
           alert("등록 완료");
           history.push("/");
-          return;
+          return 0;
         } else {
           backUpload(chain);
         }
@@ -204,13 +204,15 @@ const ImageUpload = ({ name, maxImageNum }) => {
     setcategory(e.target.value);
   };
   useEffect(() => {
-    window.onbeforeunload = function (e) {
-      return 0;
-    };
     for (let j = 0; j < items.length; j++) {
       items[j].id = j;
     }
   }, [items]);
+  useEffect(() => {
+    window.onbeforeunload = function (e) {
+      return 0;
+    };
+  }, []);
   return (
     <>
       {isUpload ? (
