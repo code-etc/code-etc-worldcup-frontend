@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import PlayWorldcupCount from "./PlayWorldcupCount";
 import PlayWorldcupDatas from "./PlayWorldcupDatas";
@@ -25,13 +26,12 @@ const PlayWorldcup = () => {
   }, [clickWorldcup]);
 
   const getWorldcupDatas = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await axios(url);
     setChooseCandiate(false);
-    setWorldcupTitle(data.title);
-    setWorldcupDatas([...data.select]);
-    setWorldcupCount(data.worldcupCount);
-    setNextMatchUrl(data["next-match"]);
+    setWorldcupTitle(response.data.title);
+    setWorldcupDatas([...response.data.select]);
+    setWorldcupCount(response.data.worldcupCount);
+    setNextMatchUrl(response.data["next-match"]);
   };
 
   return (

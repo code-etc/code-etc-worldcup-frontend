@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import WorldcupTitle from "../PlayWorldcuppage/WorldcupTitle";
 import WorldcupRankData from "./WorldcupRankData";
 
@@ -12,16 +13,15 @@ const WorldcupRankPage = ({ location }) => {
   }, []);
 
   const getWorldcupRank = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    setWorldcupTitle(data.title);
-    setRankList(data.rankList);
+    const response = await axios(url);
+    setWorldcupTitle(response.data.title);
+    setRankList(response.data.rankList);
   };
 
   return (
     <>
-      <section className="xlw-[1280px] h-full mainFont">
-        <div className="xl:w-[1280px] m-auto">
+      <section className="xl:w-[1280px] h-full mainFont m-auto">
+        <div className="xl:w-[1280px]">
           <WorldcupTitle worldcupTitle={worldcupTitle} rankPageTitle={rankPageTitle} />
           {rankList.map((rankElement, rankIndex) => (
             <WorldcupRankData key={rankElement.name} rankElement={rankElement} rankIndex={rankIndex} />
