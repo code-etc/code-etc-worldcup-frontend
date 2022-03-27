@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import PlaySelectDatas from "./PlaySelectDatas";
 import PlaySelectResult from "./PlaySelectResult";
@@ -27,9 +28,8 @@ const PlaySelect = () => {
   };
 
   const getSelectResult = async () => {
-    const response = await fetch("/select/result/emoji");
-    const data = await response.json();
-    setSelectResults([...data.select]);
+    const response = await axios("/select/result/emoji");
+    setSelectResults([...response.data.select]);
   };
 
   return (
