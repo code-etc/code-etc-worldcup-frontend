@@ -89,7 +89,7 @@ const MyPage = () => {
         .put(
           `/accounts/${userId}`,
           JSON.stringify({
-            username: nickname,
+            nickname: nickname,
             age: age,
             address: {
               district: place,
