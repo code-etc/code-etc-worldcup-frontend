@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import ImageItem from "./ImageItem";
-import styles from "./ImageUpload.module.css";
 import axios from "axios";
 import cookies from "react-cookies";
 import { useHistory } from "react-router-dom";
@@ -12,6 +11,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   let count = 0;
   const [countState, setCountState] = useState(1);
   const [isUpload, setIsUpload] = useState(false);
+  const [isOver, setIsOver] = useState(false);
   const history = useHistory();
   const refCategory = useRef();
   const uploadFunc = (files) => {
@@ -184,7 +184,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const onDrop = (e) => {
     e.preventDefault();
 
-    labelRef.current.classList.remove(styles.is_over);
+    setIsOver(false);
     const files = e.dataTransfer.files;
     uploadFunc(files);
     console.log(e.dataTransfer.files);
@@ -194,11 +194,11 @@ const ImageUpload = ({ name, maxImageNum }) => {
   };
   const onDragOver = (e) => {
     e.preventDefault();
-    labelRef.current.classList.add(styles.is_over);
+    setIsOver(true);
   };
   const onDragLeave = (e) => {
     e.preventDefault();
-    labelRef.current.classList.remove(styles.is_over);
+    setIsOver(false);
   };
   const selectHandler = (e) => {
     setcategory(e.target.value);
@@ -226,7 +226,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
         <></>
       )}
       <form
-        className={styles.container}
+        className="py-[40px] px-[30px] h-[100vh] mainFont"
         onSubmit={onSubmit}
         action=""
         onDrop={(e) => e.preventDefault()}
@@ -234,14 +234,16 @@ const ImageUpload = ({ name, maxImageNum }) => {
         onDragOver={(e) => e.preventDefault()}
         onDragLeave={(e) => e.preventDefault()}
       >
-        <header className={styles.header}>
-          <strong className={styles.title}>{name}</strong>
-          <button type="submit">등록하기</button>
+        <header className="flex justify-between mb-[30px]">
+          <strong className="text-[18px] font-[700]">{name}</strong>
+          <button type="submit" className="bg-[transparent] text-[#0554f2] text-[18px] font-[700] cursor-pointer">
+            등록하기
+          </button>
         </header>
         <main>
-          <div className={styles.title}>제목</div>
+          <div className="text-[18px] font-[700] mb-[20px]">제목</div>
           <input
-            className={styles.title_input}
+            className="border-b-[1px] border-black w-[100%] text-[18px] mb-[40px] focus:outline-none"
             type="text"
             value={title}
             onKeyDown={(e) => {
@@ -273,22 +275,21 @@ const ImageUpload = ({ name, maxImageNum }) => {
               <option value="기타">기타</option>
             </select>
           </div>
-          <div className={styles.title}>이미지 업로드</div>
+          <div className="text-[18px] font-[700] mb-[20px]">이미지 업로드</div>
           <label
             onDragEnter={onDragEnter}
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
             ref={labelRef}
-            className={styles.imageInput}
+            className={`flex justify-center items-center w-[100%] h-[60px] px-[10px] border border-[#707070] text-center text-[#707070] transition-[background-color] transition-[opacity] duration-200 ease-in-out mb-[40px]
+            ${isOver ? " text-[white] bg-[gray] opacity-30" : " opacity-100"}`}
             htmlFor="chooseFile"
           >
             <div>이미지 파일을 놓거나 클릭하여 업로드하세요.</div>
           </label>
           <input
-            style={{
-              display: "none",
-            }}
+            className="hidden"
             id="chooseFile"
             type="file"
             accept="image/*"
@@ -296,8 +297,8 @@ const ImageUpload = ({ name, maxImageNum }) => {
             multiple={true}
           />
 
-          <div className={styles.title}>이미지 정보 추가</div>
-          <ul className={styles.imageList}>
+          <div className="text-[18px] font-[700] mb-[20px]">이미지 정보 추가</div>
+          <ul className="flex flex-wrap">
             {items ? (
               items.map((item, i) => (
                 <ImageItem key={i} item={item} i={i} onImageItemSetting={onImageItemSetting} deleteItem={deleteItem} />
