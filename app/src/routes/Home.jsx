@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Slider from "../components/Slider";
 
 const Home = () => {
+  window.onbeforeunload = function (e) {};
   const [loadingWorldcup, setLoadingWorldcup] = useState(true);
   const [loadingSelect, setLoadingSelect] = useState(true);
   const [worldcupLists, setWorldcupLists] = useState([]);
