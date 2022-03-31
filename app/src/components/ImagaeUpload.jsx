@@ -3,6 +3,7 @@ import ImageItem from "./ImageItem";
 import axios from "axios";
 import cookies from "react-cookies";
 import { useHistory } from "react-router-dom";
+import jwt from "jwt-decode";
 const ImageUpload = ({ name, maxImageNum }) => {
   const [items, setItems] = useState([]);
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
   const [countState, setCountState] = useState(1);
   const [isUpload, setIsUpload] = useState(false);
   const [isOver, setIsOver] = useState(false);
+  const [userid, setUserid] = useState(null);
   const history = useHistory();
   const refCategory = useRef();
   const uploadFunc = (files) => {
@@ -147,6 +149,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
       .post(
         "/games/strange-brother",
         JSON.stringify({
+          userId: userid,
           title: title,
           categories: [{ classifier: category }],
         }),
@@ -212,6 +215,31 @@ const ImageUpload = ({ name, maxImageNum }) => {
     window.onbeforeunload = function (e) {
       return 0;
     };
+    const token = cookies.load("access-token");
+    console.log(token);
+    if (token) {
+      const decode = jwt(token);
+      console.log(decode);
+      axios
+        .get(`/accounts/${decode.username}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setUserid(res.data.userId);
+        })
+        .catch((err) => {
+          console.log(err);
+          cookies.remove("access-token");
+          cookies.remove("refresh-token");
+          history.push("/login");
+        });
+    } else {
+      console.log("노쿠키");
+      // history.push("/login");
+    }
   }, []);
   return (
     <>
