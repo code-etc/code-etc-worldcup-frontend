@@ -264,13 +264,18 @@ const ImageUpload = ({ name, maxImageNum }) => {
       >
         <header className="flex justify-between mb-[30px]">
           <strong className="text-[18px] font-[700]">{name}</strong>
-          <button type="submit" className="bg-[transparent] text-[#0554f2] text-[18px] font-[700] cursor-pointer">
+          <button
+            id="submitButton"
+            type="submit"
+            className="bg-[transparent] text-[#0554f2] text-[18px] font-[700] cursor-pointer"
+          >
             등록하기
           </button>
         </header>
         <main>
           <div className="text-[18px] font-[700] mb-[20px]">제목</div>
           <input
+            id="titleInput"
             className="border-b-[1px] border-black w-[100%] text-[18px] mb-[40px] focus:outline-none"
             type="text"
             value={title}
@@ -317,6 +322,7 @@ const ImageUpload = ({ name, maxImageNum }) => {
             <div>이미지 파일을 놓거나 클릭하여 업로드하세요.</div>
           </label>
           <input
+            id="imageFileInput"
             className="hidden"
             id="chooseFile"
             type="file"

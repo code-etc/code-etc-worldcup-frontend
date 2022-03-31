@@ -63,6 +63,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             </button>
           </div>
           <input
+            id={`imageTitle${i + 1}`}
             className="text-[12px] w-[100%] outline-none border-b border-black resize-none focus:outline-none"
             placeholder="설명"
             type="text"
@@ -82,6 +83,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
           <div className="flex text-[12px] border-solid border-b-[1px] border-black">
             <span className="">#</span>
             <textarea
+              id={`imageTag${i + 1}`}
               ref={refTag}
               className="text-[12px] w-[100%] outline-none resize-none focus:outline-none"
               placeholder="태그"
