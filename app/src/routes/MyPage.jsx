@@ -52,7 +52,7 @@ const MyPage = () => {
         })
         .then((res) => {
           console.log(res);
-          setNickname(res.data.username);
+          setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
           setUserId(res.data.userId);
@@ -85,6 +85,7 @@ const MyPage = () => {
     e.preventDefault();
     if (isModify) {
       const decode = jwt(cookies.load("access-token"));
+      console.log("place", place);
       axios
         .put(
           `/accounts/${userId}`,
@@ -106,7 +107,7 @@ const MyPage = () => {
         )
         .then((res) => {
           console.log("수정완료", res);
-          setNickname(res.data.username);
+          setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
           alert("수정완료");
@@ -172,7 +173,7 @@ const MyPage = () => {
                 placeholder="별명를 입력해주세요"
                 value={nickname}
                 ref={inputNickNameRef}
-                onKeyDown={(e) => {
+                onKeyPress={(e) => {
                   if (e.code === "Enter") {
                     e.preventDefault();
                     inputPlaceRef.current.focus();
@@ -199,7 +200,7 @@ const MyPage = () => {
                 placeholder="거주지를 입력해주세요"
                 value={place}
                 ref={inputPlaceRef}
-                onKeyDown={(e) => {
+                onKeyPress={(e) => {
                   if (e.code === "Enter") {
                     e.preventDefault();
                     inputAgeRef.current.focus();
