@@ -33,9 +33,11 @@ const App = () => {
           },
         )
         .then((res) => {
-          cookies.save("access-token", res.data.token);
-          setIsLoading(false);
-          setIsLogin(true);
+          console.log(res);
+          if (res.data.message === "success") {
+            setIsLoading(false);
+            setIsLogin(true);
+          }
         })
         .catch((err) => {
           setIsLoading(false);
