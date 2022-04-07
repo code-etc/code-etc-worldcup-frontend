@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BackgroundImage } from "react-image-and-background-image-fade";
-const Slide = ({ datas }) => {
+import axios from "axios";
+const Slide = ({ startIndex, length }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
   const ulRef = useRef(null);
   const liRef = useRef(null);
+
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const timeoutRef = useRef(null);
   const [itemIndex, setItemIndex] = useState(0);
   const first = useRef(true);
@@ -36,7 +41,18 @@ const Slide = ({ datas }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
+    await axios
+      .get(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        setDatas(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     console.log("width: ", window.innerWidth);
     if (window.innerWidth < 730) {
       setVisibleNumber(1);
@@ -76,122 +92,130 @@ const Slide = ({ datas }) => {
 
   return (
     <>
-      <div className={`relative w-[100%] h-[250px] mt-[40px] mb-[10px] overflow-hidden`}>
-        <ul
-          className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
-          onTouchStart={(e) => {
-            touchStartPoint.current.x = e.changedTouches[0].clientX;
-            touchStartPoint.current.y = e.changedTouches[0].clientY;
-            isTouching.current = true;
-          }}
-          onTouchEnd={(e) => {
-            touchEndPoint.current.x = e.changedTouches[0].clientX;
-            touchEndPoint.current.y = e.changedTouches[0].clientY;
-            if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
-              setItemIndex((prev) => prev + 1);
-            } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
-              setItemIndex((prev) => prev - 1);
-            }
-            isTouching.current = false;
-          }}
-          ref={ulRef}
-        >
-          {datas.map((data) => (
-            <li key={data.id}>
-              <a href="/">
-                <BackgroundImage
-                  src={data.thumbnail}
-                  ref={liRef}
-                  key={data.id}
-                  className={`flex flex-col relative items-center justify-center w-[100vw] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover sm:w-[400px] sm:mr-[60px] before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
-                  renderLoader={({ hasLoaded, hasFailed }) => {
-                    if (hasLoaded) {
-                      loadCount++;
-                      if (loadCount === datas.length) {
-                        setIsLoading(false);
-                        console.log(datas.length, loadCount);
-                      }
-                    }
-                  }}
-                >
-                  {isLoading ? (
-                    <div className="text-white absolute">로딩중</div>
-                  ) : (
-                    <>
-                      <strong className="text-white mb-[20px] font-[800] text-[24px] z-[100] text-stroke-black text-stroke">
-                        {data.title}
-                      </strong>
-                      <div className="flex">
-                        <a
-                          className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
-                          href="/"
-                        >
-                          시작하기
-                        </a>
-                        <a
-                          className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
-                          href="/"
-                        >
-                          랭킹보기
-                        </a>
-                      </div>
-                      <div className="absolute right-[10px] bottom-[10px] text-white z-[100] text-stroke-black text-stroke">
-                        Made by:{data.author}
-                      </div>
-                    </>
-                  )}
-                </BackgroundImage>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <button
-          className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 left-0"
-          type="button"
-          onClick={() => {
-            isButtonClick.current = true;
-            setItemIndex((prev) => prev - 1);
-          }}
-        >
-          {"<"}
-        </button>
-        <button
-          className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 right-0"
-          type="button"
-          onClick={() => {
-            isButtonClick.current = true;
-            setItemIndex((prev) => prev + 1);
-          }}
-        >
-          {">"}
-        </button>
-      </div>
-
-      <div className="flex items-center	justify-center">
-        <ul className="flex">
-          {datas.map((data, i) => (
-            <li key={i}>
-              <button
-                type="button"
-                className={
-                  "block w-[12px] h-[12px] bg-slate-300 rounded-full mr-[2px] md:w-[14px] md:h-[14px] md:mr-[4px]" +
-                  (itemIndex <= i && itemIndex + VISIBLE_NUMBER - 1 >= i ? " bg-black" : "")
+      {loading ? (
+        <div className="flex justify-center items-center h-[250px]">
+          <div className="text-center">Loading</div>
+        </div>
+      ) : (
+        <>
+          <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
+            <ul
+              className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
+              onTouchStart={(e) => {
+                touchStartPoint.current.x = e.changedTouches[0].clientX;
+                touchStartPoint.current.y = e.changedTouches[0].clientY;
+                isTouching.current = true;
+              }}
+              onTouchEnd={(e) => {
+                touchEndPoint.current.x = e.changedTouches[0].clientX;
+                touchEndPoint.current.y = e.changedTouches[0].clientY;
+                if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
+                  setItemIndex((prev) => prev + 1);
+                } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
+                  setItemIndex((prev) => prev - 1);
                 }
-                key={i}
-                onClick={(e) => {
-                  e.preventDefault();
-                  isButtonClick.current = true;
-                  if (datas.length - VISIBLE_NUMBER < i) {
-                    setItemIndex(datas.length - VISIBLE_NUMBER);
-                  } else {
-                    setItemIndex(i);
-                  }
-                }}
-              ></button>
-            </li>
-          ))}
-        </ul>
-      </div>
+                isTouching.current = false;
+              }}
+              ref={ulRef}
+            >
+              {datas.map((data) => (
+                <li key={data.id}>
+                  <a href="/">
+                    <BackgroundImage
+                      src={data.thumbnail}
+                      ref={liRef}
+                      key={data.id}
+                      className={`flex flex-col relative items-center justify-center w-[100vw] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover sm:w-[400px] sm:mr-[60px] before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
+                      renderLoader={({ hasLoaded, hasFailed }) => {
+                        if (hasLoaded) {
+                          loadCount++;
+                          if (loadCount === datas.length) {
+                            setIsLoading(false);
+                            console.log(datas.length, loadCount);
+                          }
+                        }
+                      }}
+                    >
+                      {isLoading ? (
+                        <div className="text-white absolute">로딩중</div>
+                      ) : (
+                        <>
+                          <strong className="text-white mb-[20px] font-[800] text-[24px] z-[100] text-stroke-black text-stroke">
+                            {data.title}
+                          </strong>
+                          <div className="flex">
+                            <a
+                              className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
+                              href="/"
+                            >
+                              시작하기
+                            </a>
+                            <a
+                              className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
+                              href="/"
+                            >
+                              랭킹보기
+                            </a>
+                          </div>
+                          <div className="absolute right-[10px] bottom-[10px] text-white z-[100] text-stroke-black text-stroke">
+                            Made by:{data.author}
+                          </div>
+                        </>
+                      )}
+                    </BackgroundImage>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 left-0"
+              type="button"
+              onClick={() => {
+                isButtonClick.current = true;
+                setItemIndex((prev) => prev - 1);
+              }}
+            >
+              {"<"}
+            </button>
+            <button
+              className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 right-0"
+              type="button"
+              onClick={() => {
+                isButtonClick.current = true;
+                setItemIndex((prev) => prev + 1);
+              }}
+            >
+              {">"}
+            </button>
+          </div>
+
+          <div className="flex items-center	justify-center">
+            <ul className="flex">
+              {datas.map((data, i) => (
+                <li key={i}>
+                  <button
+                    type="button"
+                    className={
+                      "block w-[12px] h-[12px] bg-slate-300 rounded-full mr-[2px] md:w-[14px] md:h-[14px] md:mr-[4px]" +
+                      (itemIndex <= i && itemIndex + VISIBLE_NUMBER - 1 >= i ? " bg-black" : "")
+                    }
+                    key={i}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      isButtonClick.current = true;
+                      if (datas.length - VISIBLE_NUMBER < i) {
+                        setItemIndex(datas.length - VISIBLE_NUMBER);
+                      } else {
+                        setItemIndex(i);
+                      }
+                    }}
+                  ></button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </>
   );
 };
