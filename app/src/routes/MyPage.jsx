@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import cookies from "react-cookies";
 import axios from "axios";
+import qs from "qs";
 import jwt from "jwt-decode";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { AiOutlineCaretDown, AiOutlineConsoleSql } from "react-icons/ai";
+import { TiDelete } from "react-icons/ti";
 import { useHistory } from "react-router-dom";
 const MyPage = () => {
-  const [myWorldcupList, setMyWorldcupList] = useState([]);
+  const [myWorldcupList, setmyWorldcupList] = useState([]);
+  const [myWorldcupImages, setmyWorldcupImages] = useState([]);
   const [mySelectList, setMySelectList] = useState([]);
   const [worldcupDisplay, setWorldcupDisplay] = useState(false);
   const [selectDisplay, setSelectDisplay] = useState(false);
@@ -22,10 +25,67 @@ const MyPage = () => {
   const inputPlaceRef = useRef();
   const inputAgeRef = useRef();
   const [userId, setUserId] = useState();
+  const getMyWorldcupImages = async (list) => {
+    axios
+      .get(`/games/strange-brother/${list.gameId}/candidates/${list.candidates[0]}/image`, {
+        headers: {
+          Authorization: `Bearer ${cookies.load("access-token")}`,
+        },
+        responseType: "blob",
+        params: {
+          width: 400,
+          height: 250,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        const blob = new Blob([res.data], { type: "image/png" });
+        console.log("아니");
+        const url = window.URL.createObjectURL(blob);
+        console.log(url);
+        const obj = {
+          gameId: list.gameId,
+          thumbnail: url,
+          title: list.title,
+        };
+        setmyWorldcupList((prev) => [...prev, obj]);
+      })
+      .catch((err) => {
+        console.log(err);
+        const obj = {
+          gameId: list.gameId,
+          thumbnail: "",
+          title: list.title,
+        };
+        setmyWorldcupList((prev) => [...prev, obj]);
+      });
+  };
   const getMyWorldcup = async () => {
-    const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
-    console.log(json);
-    setMyWorldcupList(json);
+    // const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
+    // console.log(json);
+    // setMyWorldcupList(json);
+    axios.default.paramsSerializer = (params) => {
+      return qs.stringify(params);
+    };
+    const params = {
+      userId: userId,
+      // pageable: {
+      page: 0,
+      size: 10,
+      // sort: "title,asc",
+      // sort: ["title,desc"],
+      // },
+    };
+    axios
+      .get(`/games/strange-brother`, { params })
+      .then((res) => {
+        console.log(res.data._embedded.strangeBrotherGameQueryResponses);
+        // setmyWorldcupList(res.data._embedded.strangeBrotherGameQueryResponses);
+        res.data._embedded.strangeBrotherGameQueryResponses.map((list) => {
+          getMyWorldcupImages(list);
+        });
+      })
+      .catch((err) => console.log(err));
   };
   const getMySelect = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
@@ -78,8 +138,8 @@ const MyPage = () => {
   const ageHandler = (e) => {
     setAge(e.target.value);
   };
-  const onClickInput = (e) => {
-    e.preventDefault();
+  const deleteHandler = (gameId) => {
+    // setmyWorldcupList(myWorldcupList.filter((li) => li.gameId !== gameId));
   };
   const submitHandler = (e) => {
     e.preventDefault();
@@ -138,10 +198,14 @@ const MyPage = () => {
     }
   }, [selectDisplay]);
   useEffect(() => {
-    getMyWorldcup();
+    // getMyWorldcup();
     // getMySelect();
     getUser();
   }, []);
+
+  useEffect(() => {
+    getMyWorldcup();
+  }, [userId]);
   return (
     <div className="mainFont">
       <form className="py-[40px] px-[30px]" onSubmit={submitHandler}>
@@ -255,17 +319,25 @@ const MyPage = () => {
                   {myWorldcupList.map((item, i) => (
                     <li
                       key={i}
-                      className="flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]"
+                      className={`relative flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]`}
                     >
-                      <div>
+                      <img src={item.thumbnail} className="absolute opacity-50 object-contain h-[100%]" alt="" />
+                      <div className="text-center z-10">
                         <strong>{item.title}</strong>
                         <div className="flex justify-center items-center">
                           <a href="/" className="mr-[10px]">
                             시작하기
                           </a>
-                          <a href="/">랭킹보기</a>
+                          <a href="/" className="mr-[10px]">
+                            랭킹보기
+                          </a>
+                          <a href="/modify">수정하기</a>
                         </div>
                       </div>
+
+                      <button type="button" className="absolute top-0 right-0 p-[10px]">
+                        <TiDelete className="text-[24px]" onClick={() => deleteHandler(item.gameId)} />
+                      </button>
                     </li>
                   ))}
                 </ul>
