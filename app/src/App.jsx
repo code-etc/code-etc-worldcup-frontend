@@ -41,6 +41,7 @@ const App = () => {
           }
         })
         .catch((err) => {
+          console.log("엥");
           setIsLoading(false);
           setIsLogin(false);
         });
