@@ -39,6 +39,7 @@ function RegisterFormUpload({ maxImageNum, items, setItems }) {
       alert("후보자 개수 초과");
       return 0;
     }
+
     for (let i = 0; i < fileCount; i++) {
       if (isSameImg) {
         console.log("isSameImg2", isSameImg);
@@ -64,6 +65,7 @@ function RegisterFormUpload({ maxImageNum, items, setItems }) {
           title: "",
           tags: [],
         };
+
         for (let i = 0; i < items.length; i++) {
           if (items[i].preview === item.preview) {
             isSameImg = true;
