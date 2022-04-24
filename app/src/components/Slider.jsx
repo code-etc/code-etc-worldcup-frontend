@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { BackgroundImage } from "react-image-and-background-image-fade";
 import axios from "axios";
+import SliderItem from "./SliderItem";
+import SliderIndexButton from "./SliderIndexButton";
 const Slide = ({ startIndex, length }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
   const ulRef = useRef(null);
-  const liRef = useRef(null);
 
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ const Slide = ({ startIndex, length }) => {
     y: -1,
   });
 
-  let loadCount = 0;
+  const loadCount = useRef(0);
   const ITEM_NUMBER = datas.length;
   const [VISIBLE_NUMBER, setVisibleNumber] = useState(1);
   const handleResize = () => {
@@ -71,6 +71,7 @@ const Slide = ({ startIndex, length }) => {
       console.log("hi");
     }, 5000);
   }, []);
+
   useEffect(() => {
     console.log(itemIndex);
     if (isButtonClick.current) {
@@ -119,52 +120,13 @@ const Slide = ({ startIndex, length }) => {
               ref={ulRef}
             >
               {datas.map((data) => (
-                <li key={data.id}>
-                  <a href="/">
-                    <BackgroundImage
-                      src={data.thumbnail}
-                      ref={liRef}
-                      key={data.id}
-                      className={`flex flex-col relative items-center justify-center w-[100vw] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover sm:w-[400px] sm:mr-[60px] before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
-                      renderLoader={({ hasLoaded, hasFailed }) => {
-                        if (hasLoaded) {
-                          loadCount++;
-                          if (loadCount === datas.length) {
-                            setIsLoading(false);
-                            console.log(datas.length, loadCount);
-                          }
-                        }
-                      }}
-                    >
-                      {isLoading ? (
-                        <div className="text-white absolute">로딩중</div>
-                      ) : (
-                        <>
-                          <strong className="text-white mb-[20px] font-[800] text-[24px] z-[100] text-stroke-black text-stroke">
-                            {data.title}
-                          </strong>
-                          <div className="flex">
-                            <a
-                              className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
-                              href="/"
-                            >
-                              시작하기
-                            </a>
-                            <a
-                              className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
-                              href="/"
-                            >
-                              랭킹보기
-                            </a>
-                          </div>
-                          <div className="absolute right-[10px] bottom-[10px] text-white z-[100] text-stroke-black text-stroke">
-                            Made by:{data.author}
-                          </div>
-                        </>
-                      )}
-                    </BackgroundImage>
-                  </a>
-                </li>
+                <SliderItem
+                  data={data}
+                  loadCount={loadCount}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  datasLength={datas.length}
+                />
               ))}
             </ul>
             <button
@@ -192,25 +154,14 @@ const Slide = ({ startIndex, length }) => {
           <div className="flex items-center	justify-center">
             <ul className="flex">
               {datas.map((data, i) => (
-                <li key={i}>
-                  <button
-                    type="button"
-                    className={
-                      "block w-[12px] h-[12px] bg-slate-300 rounded-full mr-[2px] md:w-[14px] md:h-[14px] md:mr-[4px]" +
-                      (itemIndex <= i && itemIndex + VISIBLE_NUMBER - 1 >= i ? " bg-black" : "")
-                    }
-                    key={i}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      isButtonClick.current = true;
-                      if (datas.length - VISIBLE_NUMBER < i) {
-                        setItemIndex(datas.length - VISIBLE_NUMBER);
-                      } else {
-                        setItemIndex(i);
-                      }
-                    }}
-                  ></button>
-                </li>
+                <SliderIndexButton
+                  itemIndex={itemIndex}
+                  setItemIndex={setItemIndex}
+                  VISIBLE_NUMBER={VISIBLE_NUMBER}
+                  i={i}
+                  isButtonClick={isButtonClick}
+                  datasLength={datas.length}
+                />
               ))}
             </ul>
           </div>
