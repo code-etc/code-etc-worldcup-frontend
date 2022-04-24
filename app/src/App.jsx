@@ -13,6 +13,7 @@ import GNB from "./components/GNB";
 import cookies from "react-cookies";
 import axios from "axios";
 import Logout from "./routes/Logout";
+import NeedLogin from "./routes/NeedLogin";
 const App = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,9 +34,11 @@ const App = () => {
           },
         )
         .then((res) => {
-          cookies.save("access-token", res.data.token);
-          setIsLoading(false);
-          setIsLogin(true);
+          console.log(res);
+          if (res.data.message === "success") {
+            setIsLoading(false);
+            setIsLogin(true);
+          }
         })
         .catch((err) => {
           setIsLoading(false);
@@ -69,9 +72,15 @@ const App = () => {
               </>
             ) : (
               <>
-                <Route path="/registerWorldcup" component={Login} />
-                <Route path="/registerSelect" component={Login} />
-                <Route path="/myPage" component={Login} />
+                <Route path="/registerWorldcup">
+                  <NeedLogin content="회원만 월드컵을 등록할 수 있습니다" />
+                </Route>
+                <Route path="/registerSelect">
+                  <NeedLogin content="회원만 대신정해주기를 등록할 수 있습니다" />
+                </Route>
+                <Route path="/myPage">
+                  <NeedLogin content="회원만 이용하실 수 있습니다" />
+                </Route>
               </>
             )}
           </BrowserRouter>

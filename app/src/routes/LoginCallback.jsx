@@ -11,8 +11,9 @@ const LoginCallback = ({ location }) => {
   refreshTokenExpires.setDate(refreshTokenExpires.getDate() + 14);
 
   // 배포하면 + httpOnly: true
-  cookies.save("access-token", userToken.token, { path: "/", expires: accessTokenExpires, secure: true });
-  cookies.save("refresh-token", userToken.refreshToken, { path: "/", expires: refreshTokenExpires, secure: true });
+  console.log(userToken);
+  cookies.save("access-token", userToken.Authorization.substr(7), { path: "/", tokenExpiredAt: accessTokenExpires });
+  cookies.save("refresh-token", userToken.RefreshToken.substr(7), { path: "/", expires: refreshTokenExpires });
 
   window.location.href = "http://localhost:3000";
   return <div></div>;
