@@ -3,12 +3,12 @@ import { BackgroundImage } from "react-image-and-background-image-fade";
 
 function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   return (
-    <li key={data.id}>
-      <a href="/">
+    <li key={data.id} className="block w-[100vw] h-[250px] md:w-[400px] md:mr-[60px]">
+      <a href="/" className="block w-[100%] h-[100%]">
         <BackgroundImage
           src={data.thumbnail}
           key={data.id}
-          className={`flex flex-col relative items-center justify-center w-[100vw] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover sm:w-[400px] sm:mr-[60px] before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
+          className={`flex flex-col relative items-center justify-center w-[100%] h-[250px] text-black text-center bg-white rounded-[3%] bg-cover before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
           renderLoader={({ hasLoaded, hasFailed }) => {
             if (hasLoaded) {
               loadCount.current++;
