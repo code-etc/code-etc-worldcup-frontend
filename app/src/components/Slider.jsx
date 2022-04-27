@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import SliderItem from "./SliderItem";
 import SliderIndexButton from "./SliderIndexButton";
+import SliderNextButton from "./SliderNextButton";
+import SliderPrevButton from "./SliderPrevButton";
 const Slide = ({ startIndex, length }) => {
   const itemWidth = 400;
   const itemHeight = 250;
@@ -129,26 +131,8 @@ const Slide = ({ startIndex, length }) => {
                 />
               ))}
             </ul>
-            <button
-              className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 left-0"
-              type="button"
-              onClick={() => {
-                isButtonClick.current = true;
-                setItemIndex((prev) => prev - 1);
-              }}
-            >
-              {"<"}
-            </button>
-            <button
-              className="w-[30px] h-[100%] absolute top-0 text-white font-[700] text-[20px] bg-transparent border-none rounded-[4px] cursor-pointer z-20 right-0"
-              type="button"
-              onClick={() => {
-                isButtonClick.current = true;
-                setItemIndex((prev) => prev + 1);
-              }}
-            >
-              {">"}
-            </button>
+            <SliderNextButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
+            <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
           </div>
 
           <div className="flex items-center	justify-center">
