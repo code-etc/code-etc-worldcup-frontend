@@ -26,17 +26,22 @@ const MyPage = () => {
   const inputAgeRef = useRef();
   const [userId, setUserId] = useState();
   const getMyWorldcupImages = async (list) => {
-    axios
-      .get(`/games/strange-brother/${list.gameId}/candidates/${list.candidates[0]}/image`, {
-        headers: {
-          Authorization: `Bearer ${cookies.load("access-token")}`,
+    await axios
+      .get(
+        `/games/strange-brother/${list.gameId}/candidates/${
+          list.candidates[Math.floor(Math.random() * list.candidates.length)]
+        }/image`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.load("access-token")}`,
+          },
+          responseType: "blob",
+          params: {
+            width: 400,
+            height: 0,
+          },
         },
-        responseType: "blob",
-        params: {
-          width: 400,
-          height: 250,
-        },
-      })
+      )
       .then((res) => {
         console.log(res);
         const blob = new Blob([res.data], { type: "image/png" });
@@ -48,7 +53,7 @@ const MyPage = () => {
           thumbnail: url,
           title: list.title,
         };
-        setmyWorldcupList((prev) => [...prev, obj]);
+        setmyWorldcupList((prev) => [...prev, obj].sort((a, b) => (a.gameId < b.gameId ? -1 : 1)));
       })
       .catch((err) => {
         console.log(err);
@@ -57,13 +62,10 @@ const MyPage = () => {
           thumbnail: "",
           title: list.title,
         };
-        setmyWorldcupList((prev) => [...prev, obj]);
+        setmyWorldcupList((prev) => [...prev, obj].sort((a, b) => (a.gameId < b.gameId ? -1 : 1)));
       });
   };
   const getMyWorldcup = async () => {
-    // const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
-    // console.log(json);
-    // setMyWorldcupList(json);
     axios.default.paramsSerializer = (params) => {
       return qs.stringify(params);
     };
@@ -80,7 +82,6 @@ const MyPage = () => {
       .get(`/games/strange-brother`, { params })
       .then((res) => {
         console.log(res.data._embedded.strangeBrotherGameQueryResponses);
-        // setmyWorldcupList(res.data._embedded.strangeBrotherGameQueryResponses);
         res.data._embedded.strangeBrotherGameQueryResponses.map((list) => {
           getMyWorldcupImages(list);
         });
@@ -197,6 +198,7 @@ const MyPage = () => {
       refSelectBtn.current.classList.add("rotate-180");
     }
   }, [selectDisplay]);
+
   useEffect(() => {
     // getMyWorldcup();
     // getMySelect();
