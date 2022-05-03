@@ -22,9 +22,9 @@ const RegisterWorldcup = () => {
     console.log("Count:", count);
     const form = new FormData();
     let tagsObj = [];
-    for (let i = 0; i < items[count].tags.length; i++) {
-      tagsObj[i] = { classifier: items[count].tags[i] };
-    }
+    items[count].tags.forEach((tag) => {
+      tagsObj.push({ classifier: tag });
+    });
     console.log(JSON.stringify({ name: items[count].title, tags: tagsObj }));
     form.append(
       "candidate",
@@ -48,13 +48,15 @@ const RegisterWorldcup = () => {
           setIsUpload(false);
           alert("등록 완료");
           history.push("/");
-          return 0;
+          return;
         } else {
           backUpload(chain);
         }
       })
       .catch((err) => {
         console.log(err);
+        count = 0;
+        setCountState(0);
         setIsUpload(false);
       });
   };
@@ -69,11 +71,6 @@ const RegisterWorldcup = () => {
       alert("후보자는 3개이상 입력해주세요.");
       return;
     }
-    // 대신 정해주기에서
-    // if (items.length === 2 && name === "대신 정해주기 등록") {
-    //   alert("후보자를 두개 입력해주세요");
-    //   return;
-    // }
     for (let i = 0; i < items.length; i++) {
       if (items[i].title.length === 0) {
         alert("후보자들의 제목을 입력해주세요.");

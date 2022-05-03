@@ -2,7 +2,7 @@ import React from "react";
 
 function RegisterFormCategory({ selectHandler, refCategory }) {
   return (
-    <div>
+    <>
       <div className="text-[18px] font-[700] mb-[20px]">카테고리</div>
       <select
         className="text-[18px] w-[100%] h-[30px] text-center mb-[20px] border border-black rounded-[8px]"
@@ -19,7 +19,7 @@ function RegisterFormCategory({ selectHandler, refCategory }) {
         <option value="상황">상황</option>
         <option value="기타">기타</option>
       </select>
-    </div>
+    </>
   );
 }
 

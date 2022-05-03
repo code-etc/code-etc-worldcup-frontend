@@ -22,9 +22,9 @@ const RegisterSelect = () => {
     console.log("Count:", count);
     const form = new FormData();
     let tagsObj = [];
-    for (let i = 0; i < items[count].tags.length; i++) {
-      tagsObj[i] = { classifier: items[count].tags[i] };
-    }
+    items[count].tags.forEach((tag) => {
+      tagsObj.push({ classifier: tag });
+    });
     console.log(JSON.stringify({ name: items[count].title, tags: tagsObj }));
     form.append(
       "candidate",
@@ -48,12 +48,14 @@ const RegisterSelect = () => {
           setIsUpload(false);
           alert("등록 완료");
           history.push("/");
-          return 0;
+          return;
         } else {
           backUpload(chain);
         }
       })
       .catch((err) => {
+        count = 0;
+        setCountState(0);
         console.log(err);
         setIsUpload(false);
       });

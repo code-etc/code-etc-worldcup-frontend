@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import ImageItem from "./ImageItem";
+import { useCallback, useEffect, useRef } from "react";
 import ImageList from "./ImageList";
 import RegisterFormCategory from "./RegisterFormCategory";
 import RegisterFormTitle from "./RegisterFormTitle";
@@ -21,18 +20,18 @@ const ImageUploadForm = ({ maxImageNum, setCategory, title, setTitle, items, set
   };
 
   useEffect(() => {
-    for (let j = 0; j < items.length; j++) {
-      items[j].id = j;
-    }
+    items.forEach((item, i) => (item.id = i));
   }, [items]);
 
   return (
-    <main>
-      <RegisterFormTitle title={title} setTitle={setTitle} refCategory={refCategory} />
-      <RegisterFormCategory selectHandler={selectHandler} refCategory={refCategory} />
-      <RegisterFormUpload maxImageNum={maxImageNum} items={items} setItems={setItems} />
-      <ImageList items={items} onImageItemSetting={onImageItemSetting} deleteItem={deleteItem} />
-    </main>
+    <>
+      <main>
+        <RegisterFormTitle title={title} setTitle={setTitle} refCategory={refCategory} />
+        <RegisterFormCategory selectHandler={selectHandler} refCategory={refCategory} />
+        <RegisterFormUpload maxImageNum={maxImageNum} items={items} setItems={setItems} />
+        <ImageList items={items} onImageItemSetting={onImageItemSetting} deleteItem={deleteItem} />
+      </main>
+    </>
   );
 };
 
