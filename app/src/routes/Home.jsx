@@ -1,94 +1,22 @@
-import React, { useEffect, useState } from "react";
 import Slider from "../components/Slider";
+import { BsSearch } from "react-icons/bs";
 
 const Home = () => {
   window.onbeforeunload = function (e) {};
-  const [loadingWorldcup, setLoadingWorldcup] = useState(true);
-  const [loadingSelect, setLoadingSelect] = useState(true);
-  const [worldcupLists, setWorldcupLists] = useState([]);
-  const [selectLists, setSelectLists] = useState([]);
-  const divisionWorldcupList = (arr) => {
-    const maxLength = 15;
-    for (let i = 0; i < parseInt(arr.length / maxLength) + 1; i++) {
-      let list = [];
-      if (i === parseInt(arr.length / maxLength) - 1 && arr.length % maxLength < 4) {
-        for (let j = 0; j < maxLength + (arr.length % maxLength); j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-        setWorldcupLists((prev) => [...prev, list]);
-        console.log(list);
-        break;
-      } else if (i === parseInt(arr.length / maxLength)) {
-        for (let j = 0; j < arr.length % maxLength; j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-      } else {
-        for (let j = 0; j < maxLength; j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-      }
-      setWorldcupLists((prev) => [...prev, list]);
-      console.log(list);
-    }
-  };
-  const divisionSelectList = (arr) => {
-    const maxLength = 15;
-    for (let i = 0; i < parseInt(arr.length / maxLength) + 1; i++) {
-      let list = [];
-      if (i === parseInt(arr.length / maxLength) - 1 && arr.length % maxLength < 4) {
-        for (let j = 0; j < maxLength + (arr.length % maxLength); j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-        setSelectLists((prev) => [...prev, list]);
-        console.log(list);
-        break;
-      } else if (i === parseInt(arr.length / maxLength)) {
-        for (let j = 0; j < arr.length % maxLength; j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-      } else {
-        for (let j = 0; j < maxLength; j++) {
-          list[j] = arr[j + i * maxLength];
-        }
-      }
-      setSelectLists((prev) => [...prev, list]);
-      console.log(list);
-    }
-  };
-  const getWorldcupList = async () => {
-    const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)).json();
-    console.log(json);
-    divisionWorldcupList(json);
-    setLoadingWorldcup(false);
-  };
-  const getSelectList = async () => {
-    const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/selectList`)).json();
-    console.log(json);
-    divisionSelectList(json);
-    setLoadingSelect(false);
-  };
-  useEffect(() => {
-    getWorldcupList();
-    getSelectList();
-  }, []);
   return (
     <>
-      {loadingWorldcup || loadingSelect ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="font-bold text-lg">Loading</div>
+      <div className="mainFont">
+        <div className="worldcup">
+          <h1 className="text-center text-[24px] p-[10px]">월드컵</h1>
+
+          <div className="flex items-center rounded-[4px] border-slate-400 border-[1px] p-[5px]">
+            <BsSearch className="mr-[4px]" />
+            <input type="text" placeholder="월드컵 검색" className="w-[150px] h-[20px] focus:outline-none" />
+          </div>
+
+          <Slider startIndex={1} length={15} />
         </div>
-      ) : (
-        <>
-          <div>이상형월드컵</div>
-          {worldcupLists.map((worldcuplist, i) => (
-            <Slider key={i} datas={worldcuplist} />
-          ))}
-          <div>대신정해주기</div>
-          {selectLists.map((selectlist, i) => (
-            <Slider key={i} datas={selectlist} />
-          ))}
-        </>
-      )}
+      </div>
     </>
   );
 };
