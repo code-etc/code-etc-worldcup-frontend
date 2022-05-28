@@ -37,7 +37,6 @@ const Slide = ({ datas }) => {
   };
 
   useEffect(() => {
-    console.log("width: ", window.innerWidth);
     if (window.innerWidth < 730) {
       setVisibleNumber(1);
     } else if (window.innerWidth < 1100) {
@@ -47,16 +46,13 @@ const Slide = ({ datas }) => {
     } else {
       setVisibleNumber(4);
     }
-    console.log("VISIBLE_NUMBER: ", VISIBLE_NUMBER);
     window.addEventListener("resize", handleResize);
     //자동 슬라이드
     timeoutRef.current = setInterval(() => {
       setItemIndex((prev) => prev + 1);
-      console.log("hi");
     }, 5000);
   }, []);
   useEffect(() => {
-    console.log(itemIndex);
     if (isButtonClick.current) {
       //버튼클릭시 다시 interval 종료후 다시 실행
       clearTimeout(timeoutRef.current);

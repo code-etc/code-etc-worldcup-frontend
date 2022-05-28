@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Slider from "../components/Slider";
+import playWolrdcupApi from "./PlayWorldcuppage/playWorldcupApi";
 
 const Home = () => {
   window.onbeforeunload = function (e) {};
@@ -71,8 +72,12 @@ const Home = () => {
     getWorldcupList();
     getSelectList();
   }, []);
+  const playwordlcup = () => {
+    window.location.href = "playworldcup";
+  };
   return (
     <>
+      <div onClick={playwordlcup}>게임시작</div>
       {loadingWorldcup || loadingSelect ? (
         <div className="flex justify-center items-center h-screen">
           <div className="font-bold text-lg">Loading</div>

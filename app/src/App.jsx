@@ -20,6 +20,7 @@ const App = () => {
   useEffect(() => {
     const token = cookies.load("access-token");
     if (token) {
+      console.log(token);
       axios
         .post(
           "/auth/token",
@@ -33,7 +34,8 @@ const App = () => {
           },
         )
         .then((res) => {
-          cookies.save("access-token", res.data.token);
+          console.log(res.data);
+          // cookies.save("access-token", res.data.token);
           setIsLoading(false);
           setIsLogin(true);
         })
