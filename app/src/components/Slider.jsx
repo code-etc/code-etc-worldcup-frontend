@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import qs from "query-string";
 import axios from "axios";
 import SliderItem from "./SliderItem";
 import SliderIndexButton from "./SliderIndexButton";
 import SliderNextButton from "./SliderNextButton";
 import SliderPrevButton from "./SliderPrevButton";
-const Slide = ({ startIndex, length }) => {
+const Slide = () => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
@@ -43,17 +44,41 @@ const Slide = ({ startIndex, length }) => {
     }
   };
 
-  useEffect(async () => {
-    await axios
-      .get(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)
+  const getContent = () => {
+    axios.default.paramsSerializer = (params) => {
+      return qs.stringify(params);
+    };
+    const params = {
+      // userId: userId,
+      // pageable: {
+      page: 0,
+      size: 15,
+      // sort: "title,asc",
+      // sort: ["title,desc"],
+      // },
+    };
+    axios
+      .get(`/games/strange-brother`, { params })
       .then((res) => {
         console.log(res);
         setLoading(false);
-        setDatas(res.data);
+        setDatas(res.data._embedded.strangeBrotherGameQueryResponses);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(async () => {
+    getContent();
+    // await axios
+    //   .get(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setLoading(false);
+    //     setDatas(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     console.log("width: ", window.innerWidth);
     if (window.innerWidth < 730) {
