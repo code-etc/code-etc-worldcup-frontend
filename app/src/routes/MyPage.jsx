@@ -25,10 +25,11 @@ const MyPage = () => {
   const inputPlaceRef = useRef();
   const inputAgeRef = useRef();
   const [userId, setUserId] = useState();
-  const getMyWorldcupImages = async (list) => {
-    await axios
+  const getMyWorldcupImages = (list) => {
+    console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
+    axios
       .get(
-        `/games/strange-brother/${list.gameId}/candidates/${
+        `/games/strange-brother/${list.id}/candidates/${
           list.candidates[Math.floor(Math.random() * list.candidates.length)]
         }/image`,
         {
@@ -37,13 +38,13 @@ const MyPage = () => {
           },
           responseType: "blob",
           params: {
-            width: 400,
-            height: 0,
+            width: 0,
+            height: 240,
           },
         },
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         const blob = new Blob([res.data], { type: "image/png" });
         console.log("아니");
         const url = window.URL.createObjectURL(blob);
@@ -65,15 +66,13 @@ const MyPage = () => {
         setmyWorldcupList((prev) => [...prev, obj].sort((a, b) => (a.gameId < b.gameId ? -1 : 1)));
       });
   };
-  const getMyWorldcup = async () => {
-    axios.default.paramsSerializer = (params) => {
-      return qs.stringify(params);
-    };
+  const getMyWorldcup = () => {
     const params = {
-      userId: userId,
       // pageable: {
       page: 0,
       size: 10,
+      "user-id": userId,
+      // random: true,
       // sort: "title,asc",
       // sort: ["title,desc"],
       // },
@@ -116,7 +115,7 @@ const MyPage = () => {
           setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
-          setUserId(res.data.userId);
+          setUserId(res.data.id);
         })
         .catch((err) => {
           console.log(err);
@@ -203,11 +202,10 @@ const MyPage = () => {
     // getMyWorldcup();
     // getMySelect();
     getUser();
+
+    getMyWorldcup();
   }, []);
 
-  useEffect(() => {
-    getMyWorldcup();
-  }, [userId]);
   return (
     <div className="mainFont">
       <form className="py-[40px] px-[30px]" onSubmit={submitHandler}>
