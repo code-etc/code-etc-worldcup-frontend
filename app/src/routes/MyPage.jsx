@@ -24,7 +24,7 @@ const MyPage = () => {
   const inputNickNameRef = useRef();
   const inputPlaceRef = useRef();
   const inputAgeRef = useRef();
-  const [userId, setUserId] = useState();
+  const userIdRef = useRef();
   const getMyWorldcupImages = (list) => {
     console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
@@ -71,12 +71,13 @@ const MyPage = () => {
       // pageable: {
       page: 0,
       size: 10,
-      "user-id": userId,
+      "user-id": userIdRef.current,
       // random: true,
       // sort: "title,asc",
       // sort: ["title,desc"],
       // },
     };
+    console.log(params);
     axios
       .get(`/games/strange-brother`, { params })
       .then((res) => {
@@ -115,7 +116,8 @@ const MyPage = () => {
           setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
-          setUserId(res.data.id);
+          userIdRef.current = res.data.id;
+          getMyWorldcup();
         })
         .catch((err) => {
           console.log(err);
@@ -148,7 +150,7 @@ const MyPage = () => {
       console.log("place", place);
       axios
         .put(
-          `/accounts/${userId}`,
+          `/accounts/${userIdRef.current}`,
           JSON.stringify({
             nickname: nickname,
             age: age,
@@ -202,8 +204,6 @@ const MyPage = () => {
     // getMyWorldcup();
     // getMySelect();
     getUser();
-
-    getMyWorldcup();
   }, []);
 
   return (
