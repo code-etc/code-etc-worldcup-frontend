@@ -10,7 +10,7 @@ const HomeWorldcup = () => {
         <input type="text" placeholder="월드컵 검색" className="w-[100%] h-[20px] focus:outline-none" />
       </div>
 
-      <Slider startIndex={1} length={15} />
+      <Slider page={0} />
     </div>
   );
 };

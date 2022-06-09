@@ -67,18 +67,8 @@ const Slide = () => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     getContent();
-    // await axios
-    //   .get(`https://61fbded03f1e34001792c680.mockapi.io/worldcupList`)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setLoading(false);
-    //     setDatas(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
 
     console.log("width: ", window.innerWidth);
     if (window.innerWidth < 730) {

@@ -4,6 +4,11 @@ import { BackgroundImage } from "react-image-and-background-image-fade";
 
 function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   const [imageUrl, setImageUrl] = useState("");
+  const [nickname, setNickname] = useState("");
+  const getNickname = () => {
+    console.log(datasLength);
+    axios.get(`/accounts/${data.userId}`).then((res) => setNickname(res.data.nickname));
+  };
   const getWorldcupImage = (list) => {
     console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
@@ -32,6 +37,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
 
   useEffect(() => {
     getWorldcupImage(data);
+    getNickname();
   }, []);
   return (
     <li key={data.id} className="block w-[100vw] h-[250px] md:w-[400px] md:mr-[60px]">
@@ -43,8 +49,8 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
           renderLoader={({ hasLoaded, hasFailed }) => {
             if (hasLoaded) {
               loadCount.current++;
+              setIsLoading(false);
               if (loadCount.current === datasLength - 1) {
-                setIsLoading(false);
                 console.log(datasLength, loadCount.current);
               }
             }
@@ -72,7 +78,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
                 </a>
               </div>
               <div className="absolute right-[10px] bottom-[10px] text-white z-[100] text-stroke-black text-stroke">
-                Made by:{data.author}
+                Made by:{nickname}
               </div>
             </>
           )}
