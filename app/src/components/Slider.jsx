@@ -5,7 +5,7 @@ import SliderItem from "./SliderItem";
 import SliderIndexButton from "./SliderIndexButton";
 import SliderNextButton from "./SliderNextButton";
 import SliderPrevButton from "./SliderPrevButton";
-const Slide = () => {
+const Slide = ({ page, setSliderCount }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
@@ -51,7 +51,7 @@ const Slide = () => {
     const params = {
       // userId: userId,
       // pageable: {
-      page: 0,
+      page: page,
       size: 15,
       // sort: "title,asc",
       // sort: ["title,desc"],
@@ -60,9 +60,12 @@ const Slide = () => {
     axios
       .get(`/games/strange-brother`, { params })
       .then((res) => {
-        console.log(res);
+        console.log(`${page}: ${res.data._embedded.strangeBrotherGameQueryResponses.length}`);
         setLoading(false);
         setDatas(res.data._embedded.strangeBrotherGameQueryResponses);
+        if (15 === res.data._embedded.strangeBrotherGameQueryResponses.length) {
+          setSliderCount((prev) => [...prev, 0]);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -150,7 +153,7 @@ const Slide = () => {
             <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
           </div>
 
-          <div className="flex items-center	justify-center">
+          <div className="flex items-center	justify-center mb-[10px]">
             <ul className="flex">
               {datas.map((data, i) => (
                 <SliderIndexButton
