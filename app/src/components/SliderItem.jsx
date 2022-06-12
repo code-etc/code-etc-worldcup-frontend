@@ -6,7 +6,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   const [imageUrl, setImageUrl] = useState("");
   const [nickname, setNickname] = useState("");
   const getNickname = () => {
-    console.log(datasLength);
+    console.log(data);
     axios.get(`/accounts/${data.userId}`).then((res) => setNickname(res.data.nickname));
   };
   const getWorldcupImage = (list) => {
@@ -41,7 +41,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   }, []);
   return (
     <li key={data.id} className="block w-[100vw] h-[250px] md:w-[400px] md:mr-[60px]">
-      <a href="/" className="block w-[100%] h-[100%]">
+      <a href={`/worldcup/${data.id}`} className="block w-[100%] h-[100%]">
         <BackgroundImage
           src={imageUrl}
           key={data.id}
@@ -66,13 +66,13 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
               <div className="flex">
                 <a
                   className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
-                  href="/"
+                  href={`/worldcup/${data.id}`}
                 >
                   시작하기
                 </a>
                 <a
                   className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
-                  href="/"
+                  href={`worldcup/rank/${data.id}`}
                 >
                   랭킹보기
                 </a>

@@ -50,7 +50,7 @@ const MyPage = () => {
         const url = window.URL.createObjectURL(blob);
         console.log(url);
         const obj = {
-          gameId: list.gameId,
+          gameId: list.id,
           thumbnail: url,
           title: list.title,
         };
@@ -59,7 +59,7 @@ const MyPage = () => {
       .catch((err) => {
         console.log(err);
         const obj = {
-          gameId: list.gameId,
+          gameId: list.id,
           thumbnail: "",
           title: list.title,
         };
@@ -325,13 +325,12 @@ const MyPage = () => {
                       <div className="text-center z-10">
                         <strong>{item.title}</strong>
                         <div className="flex justify-center items-center">
-                          <a href="/" className="mr-[10px]">
+                          <a href={`/worldcup/${item.gameId}`} className="mr-[10px]">
                             시작하기
                           </a>
-                          <a href="/" className="mr-[10px]">
+                          <a href={`/worldcup/rank/${item.gameId}`} className="mr-[10px]">
                             랭킹보기
                           </a>
-                          <a href="/modify">수정하기</a>
                         </div>
                       </div>
 
@@ -368,12 +367,11 @@ const MyPage = () => {
                       className="flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]"
                     >
                       <div>
-                        <strong>{item.title}</strong>
+                        <strong>{item.gameId}</strong>
                         <div className="flex justify-center items-center">
                           <a href="/" className="mr-[10px]">
                             시작하기
                           </a>
-                          <a href="/">랭킹보기</a>
                         </div>
                       </div>
                     </li>
