@@ -5,12 +5,15 @@ import SliderItem from "./SliderItem";
 import SliderIndexButton from "./SliderIndexButton";
 import SliderNextButton from "./SliderNextButton";
 import SliderPrevButton from "./SliderPrevButton";
+import { useInView } from "react-intersection-observer";
+
 const Slide = ({ page, setSliderCount }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
   const ulRef = useRef(null);
 
+  const [isNextSlider, setIsNextSlider] = useState(false);
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +35,8 @@ const Slide = ({ page, setSliderCount }) => {
   const loadCount = useRef(0);
   const ITEM_NUMBER = datas.length;
   const [VISIBLE_NUMBER, setVisibleNumber] = useState(1);
+  const [ref, inView] = useInView();
+
   const handleResize = () => {
     if (window.innerWidth < 730) {
       setVisibleNumber(1);
@@ -62,13 +67,30 @@ const Slide = ({ page, setSliderCount }) => {
       .then((res) => {
         console.log(`${page}: ${res.data._embedded.strangeBrotherGameQueryResponses.length}`);
         setLoading(false);
-        setDatas(res.data._embedded.strangeBrotherGameQueryResponses);
-        if (15 === res.data._embedded.strangeBrotherGameQueryResponses.length) {
-          setSliderCount((prev) => [...prev, 0]);
+        const temp = res.data._embedded.strangeBrotherGameQueryResponses;
+        if (temp.length === 15) {
+          setIsNextSlider(true);
         }
+        setDatas(temp);
       })
       .catch((err) => console.log(err));
   };
+  useEffect(() => {
+    if (datas.length === 15 && inView) {
+      const temp = [];
+      for (let i = 0; i <= page + 1; i++) {
+        temp.push(0);
+      }
+      setSliderCount(temp);
+    }
+
+    if (!inView) {
+      // console.log("timeout:", timeoutRef.current);
+      clearTimeout(timeoutRef.current);
+      console.log("timeout:", timeoutRef.current);
+    } else {
+    }
+  }, [inView, isLoading]);
 
   useEffect(() => {
     getContent();
@@ -107,69 +129,77 @@ const Slide = ({ page, setSliderCount }) => {
     } else {
       if (itemIndex >= ITEM_NUMBER - VISIBLE_NUMBER + 1) setItemIndex(0);
       if (itemIndex <= -1) setItemIndex(ITEM_NUMBER - VISIBLE_NUMBER);
-      ulRef.current.style.transform = `translateX(-${(100 / ITEM_NUMBER) * itemIndex}%)`;
+      ulRef.current
+        ? (ulRef.current.style.transform = `translateX(-${(100 / ITEM_NUMBER) * itemIndex}%)`)
+        : (ulRef.current = null);
     }
   }, [itemIndex]);
 
   return (
-    <>
+    <div ref={ref}>
       {loading ? (
         <div className="flex justify-center items-center h-[250px]">
           <div className="text-center">Loading</div>
         </div>
       ) : (
         <>
-          <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
-            <ul
-              className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
-              onTouchStart={(e) => {
-                touchStartPoint.current.x = e.changedTouches[0].clientX;
-                touchStartPoint.current.y = e.changedTouches[0].clientY;
-                isTouching.current = true;
-              }}
-              onTouchEnd={(e) => {
-                touchEndPoint.current.x = e.changedTouches[0].clientX;
-                touchEndPoint.current.y = e.changedTouches[0].clientY;
-                if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
-                  setItemIndex((prev) => prev + 1);
-                } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
-                  setItemIndex((prev) => prev - 1);
-                }
-                isTouching.current = false;
-              }}
-              ref={ulRef}
-            >
-              {datas.map((data) => (
-                <SliderItem
-                  data={data}
-                  loadCount={loadCount}
-                  isLoading={isLoading}
-                  setIsLoading={setIsLoading}
-                  datasLength={datas.length}
-                />
-              ))}
-            </ul>
-            <SliderNextButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
-            <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
-          </div>
+          {datas.length === 0 ? (
+            <></>
+          ) : (
+            <>
+              <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
+                <ul
+                  className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
+                  onTouchStart={(e) => {
+                    touchStartPoint.current.x = e.changedTouches[0].clientX;
+                    touchStartPoint.current.y = e.changedTouches[0].clientY;
+                    isTouching.current = true;
+                  }}
+                  onTouchEnd={(e) => {
+                    touchEndPoint.current.x = e.changedTouches[0].clientX;
+                    touchEndPoint.current.y = e.changedTouches[0].clientY;
+                    if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
+                      setItemIndex((prev) => prev + 1);
+                    } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
+                      setItemIndex((prev) => prev - 1);
+                    }
+                    isTouching.current = false;
+                  }}
+                  ref={ulRef}
+                >
+                  {datas.map((data) => (
+                    <SliderItem
+                      data={data}
+                      loadCount={loadCount}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
+                      datasLength={datas.length}
+                    />
+                  ))}
+                </ul>
+                <SliderNextButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
+                <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
+              </div>
 
-          <div className="flex items-center	justify-center mb-[10px]">
-            <ul className="flex">
-              {datas.map((data, i) => (
-                <SliderIndexButton
-                  itemIndex={itemIndex}
-                  setItemIndex={setItemIndex}
-                  VISIBLE_NUMBER={VISIBLE_NUMBER}
-                  i={i}
-                  isButtonClick={isButtonClick}
-                  datasLength={datas.length}
-                />
-              ))}
-            </ul>
-          </div>
+              <div className="flex items-center	justify-center mb-[10px]">
+                <ul className="flex">
+                  {datas.map((data, i) => (
+                    <SliderIndexButton
+                      itemIndex={itemIndex}
+                      setItemIndex={setItemIndex}
+                      VISIBLE_NUMBER={VISIBLE_NUMBER}
+                      i={i}
+                      isButtonClick={isButtonClick}
+                      datasLength={datas.length}
+                    />
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
         </>
       )}
-    </>
+    </div>
   );
 };
 export default Slide;
