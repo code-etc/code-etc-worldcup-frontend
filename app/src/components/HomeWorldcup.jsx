@@ -10,9 +10,15 @@ const HomeWorldcup = () => {
         <BsSearch className="mr-[4px]" />
         <input type="text" placeholder="월드컵 검색" className="w-[100%] h-[20px] focus:outline-none" />
       </div>
-      {sliderCount.map((a, i) => (
-        <Slider page={i} setSliderCount={setSliderCount} />
-      ))}
+      <>
+        {sliderCount.map((a, i) =>
+          i === sliderCount.length - 1 ? (
+            <Slider page={i} setSliderCount={setSliderCount} sliderItemSize={15} />
+          ) : (
+            <Slider page={i} sliderItemSize={15} />
+          ),
+        )}
+      </>
     </div>
   );
 };

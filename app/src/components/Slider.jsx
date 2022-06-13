@@ -7,7 +7,7 @@ import SliderNextButton from "./SliderNextButton";
 import SliderPrevButton from "./SliderPrevButton";
 import { useInView } from "react-intersection-observer";
 
-const Slide = ({ page, setSliderCount }) => {
+const Slide = ({ page, setSliderCount, sliderItemSize }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
@@ -57,7 +57,7 @@ const Slide = ({ page, setSliderCount }) => {
       // userId: userId,
       // pageable: {
       page: page,
-      size: 15,
+      size: sliderItemSize,
       // sort: "title,asc",
       // sort: ["title,desc"],
       // },
@@ -68,15 +68,15 @@ const Slide = ({ page, setSliderCount }) => {
         console.log(`${page}: ${res.data._embedded.strangeBrotherGameQueryResponses.length}`);
         setLoading(false);
         const temp = res.data._embedded.strangeBrotherGameQueryResponses;
-        if (temp.length === 15) {
+        if (temp.length === sliderItemSize) {
           setIsNextSlider(true);
         }
-        setDatas(temp);
+        setDatas(temp ? temp : []);
       })
       .catch((err) => console.log(err));
   };
   useEffect(() => {
-    if (datas.length === 15 && inView) {
+    if (setSliderCount !== undefined && datas.length === sliderItemSize && inView) {
       const temp = [];
       for (let i = 0; i <= page + 1; i++) {
         temp.push(0);
@@ -85,10 +85,13 @@ const Slide = ({ page, setSliderCount }) => {
     }
 
     if (!inView) {
-      // console.log("timeout:", timeoutRef.current);
       clearTimeout(timeoutRef.current);
-      console.log("timeout:", timeoutRef.current);
-    } else {
+      timeoutRef.current = false;
+    } else if (!timeoutRef.current) {
+      timeoutRef.current = setInterval(() => {
+        setItemIndex((prev) => prev + 1);
+        console.log("hi");
+      }, 5000);
     }
   }, [inView, isLoading]);
 
@@ -136,15 +139,15 @@ const Slide = ({ page, setSliderCount }) => {
   }, [itemIndex]);
 
   return (
-    <div ref={ref}>
-      {loading ? (
-        <div className="flex justify-center items-center h-[250px]">
-          <div className="text-center">Loading</div>
-        </div>
+    <>
+      {datas.length === 0 ? (
+        <></>
       ) : (
-        <>
-          {datas.length === 0 ? (
-            <></>
+        <div ref={ref}>
+          {loading ? (
+            <div className="flex justify-center items-center h-[250px]">
+              <div className="text-center">Loading</div>
+            </div>
           ) : (
             <>
               <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
@@ -197,9 +200,9 @@ const Slide = ({ page, setSliderCount }) => {
               </div>
             </>
           )}
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 export default Slide;
