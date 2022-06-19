@@ -94,7 +94,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             />
           </div>
           <ul className="flex flex-wrap">
-            {item.tags ? (
+            {item && item.tags ? (
               item.tags.map((tag, i) => (
                 <li className="flex text-[12px] bg-slate-200 mb-[2px] mr-[5px] pr-[2px] pl-[2px] rounded-[4px]" key={i}>
                   <button type="button" id={i} onClick={onDeleteTagBtn}>
