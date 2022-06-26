@@ -41,7 +41,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   }, []);
   return (
     <li key={data.id} className="block w-[100vw] h-[250px] md:w-[400px] md:mr-[60px]">
-      <a href={`/worldcup/${data.id}`} className="block w-[100%] h-[100%]">
+      <a href={`/playWorldcup/${data.id}`} className="block w-[100%] h-[100%]">
         <BackgroundImage
           src={imageUrl}
           key={data.id}
@@ -66,7 +66,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
               <div className="flex">
                 <a
                   className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
-                  href={`/worldcup/${data.id}`}
+                  href={`/playWorldcup/${data.id}`}
                 >
                   시작하기
                 </a>
