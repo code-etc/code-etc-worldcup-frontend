@@ -6,6 +6,8 @@ import jwt from "jwt-decode";
 import { AiOutlineCaretDown, AiOutlineConsoleSql } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import { useHistory } from "react-router-dom";
+import Slider from "../components/Slider";
+
 const MyPage = () => {
   const [myWorldcupList, setmyWorldcupList] = useState([]);
   const [myWorldcupImages, setmyWorldcupImages] = useState([]);
@@ -15,6 +17,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const [place, setPlace] = useState("");
   const [age, setAge] = useState(0);
+  const [userId, setUserId] = useState();
   const [isModify, setIsModify] = useState(false);
   const refWorldcupBtn = useRef();
   const refSelectBtn = useRef();
@@ -25,6 +28,8 @@ const MyPage = () => {
   const inputPlaceRef = useRef();
   const inputAgeRef = useRef();
   const userIdRef = useRef();
+  const [sliderCount, setSliderCount] = useState([0]);
+
   const getMyWorldcupImages = (list) => {
     console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
@@ -117,6 +122,7 @@ const MyPage = () => {
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
           userIdRef.current = res.data.id;
+          setUserId(res.data.id);
           getMyWorldcup();
         })
         .catch((err) => {
@@ -315,31 +321,24 @@ const MyPage = () => {
               ) : myWorldcupList.length === 0 ? (
                 <div>등록한 월드컵이 없습니다.</div>
               ) : (
-                <ul ref={refWorldcupList} className="md:flex md:flex-wrap">
-                  {myWorldcupList.map((item, i) => (
-                    <li
-                      key={i}
-                      className={`relative flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]`}
-                    >
-                      <img src={item.thumbnail} className="absolute opacity-50 object-contain h-[100%]" alt="" />
-                      <div className="text-center z-10">
-                        <strong>{item.title}</strong>
-                        <div className="flex justify-center items-center">
-                          <a href={`/worldcup/${item.gameId}`} className="mr-[10px]">
-                            시작하기
-                          </a>
-                          <a href={`/worldcup/rank/${item.gameId}`} className="mr-[10px]">
-                            랭킹보기
-                          </a>
-                        </div>
-                      </div>
-
-                      <button type="button" className="absolute top-0 right-0 p-[10px]">
-                        <TiDelete className="text-[24px]" onClick={() => deleteHandler(item.gameId)} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mx-[-30px]">
+                  {userId ? (
+                    sliderCount.map((a, i) =>
+                      i === sliderCount.length - 1 ? (
+                        <Slider
+                          userId={userIdRef.current}
+                          page={i}
+                          setSliderCount={setSliderCount}
+                          sliderItemSize={15}
+                        />
+                      ) : (
+                        <Slider userId={userIdRef.current} page={i} sliderItemSize={15} />
+                      ),
+                    )
+                  ) : (
+                    <></>
+                  )}
+                </div>
               )}
             </div>
 

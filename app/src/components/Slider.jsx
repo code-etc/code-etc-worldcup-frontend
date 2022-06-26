@@ -7,7 +7,7 @@ import SliderNextButton from "./SliderNextButton";
 import SliderPrevButton from "./SliderPrevButton";
 import { useInView } from "react-intersection-observer";
 
-const Slide = ({ page, setSliderCount, sliderItemSize }) => {
+const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
   const itemWidth = 400;
   const itemHeight = 250;
   const itemMargin = 60;
@@ -38,14 +38,18 @@ const Slide = ({ page, setSliderCount, sliderItemSize }) => {
   const [ref, inView] = useInView();
 
   const handleResize = () => {
-    if (window.innerWidth < 730) {
-      setVisibleNumber(1);
-    } else if (window.innerWidth < 1100) {
-      setVisibleNumber(2);
-    } else if (window.innerWidth < 1600) {
-      setVisibleNumber(3);
+    if (!userId) {
+      if (window.innerWidth < 730) {
+        setVisibleNumber(1);
+      } else if (window.innerWidth < 1100) {
+        setVisibleNumber(2);
+      } else if (window.innerWidth < 1600) {
+        setVisibleNumber(3);
+      } else {
+        setVisibleNumber(4);
+      }
     } else {
-      setVisibleNumber(4);
+      setVisibleNumber(1);
     }
   };
 
@@ -58,6 +62,7 @@ const Slide = ({ page, setSliderCount, sliderItemSize }) => {
       // pageable: {
       page: page,
       size: sliderItemSize,
+      "user-id": userId,
       // sort: "title,asc",
       // sort: ["title,desc"],
       // },
@@ -103,14 +108,18 @@ const Slide = ({ page, setSliderCount, sliderItemSize }) => {
     getContent();
 
     console.log("width: ", window.innerWidth);
-    if (window.innerWidth < 730) {
-      setVisibleNumber(1);
-    } else if (window.innerWidth < 1100) {
-      setVisibleNumber(2);
-    } else if (window.innerWidth < 1600) {
-      setVisibleNumber(3);
+    if (!userId) {
+      if (window.innerWidth < 730) {
+        setVisibleNumber(1);
+      } else if (window.innerWidth < 1100) {
+        setVisibleNumber(2);
+      } else if (window.innerWidth < 1600) {
+        setVisibleNumber(3);
+      } else {
+        setVisibleNumber(4);
+      }
     } else {
-      setVisibleNumber(4);
+      setVisibleNumber(1);
     }
     console.log("VISIBLE_NUMBER: ", VISIBLE_NUMBER);
     window.addEventListener("resize", handleResize);
