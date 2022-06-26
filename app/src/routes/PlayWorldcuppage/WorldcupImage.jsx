@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const WorldcupImage = ({ worldcupData, chooseCandidate, className }) => {
+const WorldcupImage = ({ worldcupData, handleChooseCandidate, className }) => {
   const imageRef = useRef();
   const [isLoad, setIsLoad] = useState(false);
 
@@ -19,15 +19,14 @@ const WorldcupImage = ({ worldcupData, chooseCandidate, className }) => {
   }, []);
 
   return (
-    <>
-      <img
-        ref={imageRef}
-        src={worldcupData.picture}
-        className={className}
-        alt={worldcupData.name}
-        onClick={chooseCandidate}
-      />
-    </>
+    <img
+      id={worldcupData.id}
+      ref={imageRef}
+      src={worldcupData.imageURI}
+      className={className}
+      alt={worldcupData.name}
+      onClick={handleChooseCandidate}
+    />
   );
 };
 
