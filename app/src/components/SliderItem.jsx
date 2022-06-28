@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BackgroundImage } from "react-image-and-background-image-fade";
+import { useHistory } from "react-router-dom";
 
 function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   const [imageUrl, setImageUrl] = useState("");
   const [nickname, setNickname] = useState("");
+  const history = useHistory();
+
   const getNickname = () => {
     console.log(data);
     axios.get(`/accounts/${data.userId}`).then((res) => setNickname(res.data.nickname));
@@ -35,13 +38,20 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
       });
   };
 
+  const goGamePlayPage = () =>
+    history.push({
+      pathname: `playWorldcup/${data.id}`,
+      state: {
+        gameId: data.id,
+      },
+    });
   useEffect(() => {
     getWorldcupImage(data);
     getNickname();
   }, []);
   return (
     <li key={data.id} className="block w-[100vw] h-[250px] md:w-[400px] md:mr-[60px]">
-      <a href={`/playWorldcup/${data.id}`} className="block w-[100%] h-[100%]">
+      <button onClick={goGamePlayPage} className="block w-[100%] h-[100%]">
         <BackgroundImage
           src={imageUrl}
           key={data.id}
@@ -64,12 +74,12 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
                 {data.title}
               </strong>
               <div className="flex">
-                <a
+                <button
                   className="text-white font-[600] text-[15px] no-underline z-[100] mr-[10px] text-stroke-black text-stroke"
-                  href={`/playWorldcup/${data.id}`}
+                  onClick={goGamePlayPage}
                 >
                   시작하기
-                </a>
+                </button>
                 <a
                   className="text-white font-[300] text-[15px] no-underline z-[100] text-stroke-black text-stroke"
                   href={`worldcup/rank/${data.id}`}
@@ -83,7 +93,7 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
             </>
           )}
         </BackgroundImage>
-      </a>
+      </button>
     </li>
   );
 }
