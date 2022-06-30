@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import PlayWorldcupData from "./PlayWorldcupData";
 import PlayWorldcupDefaultText from "./PlayWorldcupDefaultText";
@@ -5,56 +6,68 @@ import Versus from "./Versus";
 import WorldcupSelectResult from "./WorldcupSelectResult";
 
 const PlayWorldcupDatas = ({
-  worldcupDatas,
-  setClickWorldcup,
-  worldcupCount,
+  worldcupMatchList,
+  candidateList,
   setWorldcupWinner,
-  chooseCandiate,
-  setChooseCandiate,
+  currentMatch,
+  setCurrentMatch,
+  selectCandidate,
+  setSelectCandidate,
+  matchWinner,
+  setMatchWinner,
 }) => {
-  const [clickImage, setClickImage] = useState("");
-  const [passOrFail, setPassOrFail] = useState();
+  const handleChooseCandidate = async (event) => {
+    try {
+      await axios({
+        url: `/game-service/matches/${worldcupMatchList[currentMatch].id}?winner=${event.target.id}`,
+        method: "PUT",
+      });
 
-  if (worldcupDatas.length === 0) {
-    return <div>404 에러</div>;
-  }
+      const winnerInfo = candidateList.find((candidate) => candidate.data.id === event.target.id);
 
-  const handleClickEvent = (event) => {
-    setPassOrFail(event.target.textContent);
-    setChooseCandiate(true);
-    worldcupDatas.length > 1 ? setClickImage(event.target) : setClickImage(worldcupDatas[0]);
-    worldcupCount[0] !== worldcupCount[1] ? setClickWorldcup(event.target) : setWorldcupWinner(event.target);
+      if (worldcupMatchList.length === 1) {
+        setWorldcupWinner(true);
+      }
+
+      setCurrentMatch((prev) => (prev += 1));
+      setMatchWinner(winnerInfo);
+      setSelectCandidate(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  if (selectCandidate) {
+    return <WorldcupSelectResult matchWinner={matchWinner} />;
+  }
+
   return (
-    <>
-      {chooseCandiate ? (
+    <div className="mt-[40px] flex w-[100%] justify-center relative">
+      {candidateList[1] === "" ? (
         <>
-          <WorldcupSelectResult clickImage={clickImage} passOrFail={passOrFail} />
+          <PlayWorldcupDefaultText
+            passOrFailText="통과"
+            handleClickEvent={handleChooseCandidate}
+            candidateInfo={candidateList[0]}
+          />
+          <h1 className="xl:text-[100px] sm:text-[60px] text-[40px] absolute w-fix z-10 text-red-600">부전승 발생!</h1>
+          <PlayWorldcupData candidateInfo={candidateList[0]} />
+          <PlayWorldcupDefaultText
+            passOrFailText="탈락"
+            handleClickEvent={handleChooseCandidate}
+            candidateInfo={candidateList[0]}
+          />
         </>
       ) : (
-        <div className="mt-[40px] flex w-[100%] justify-center relative">
-          {worldcupDatas.length === 1 ? (
-            <>
-              <PlayWorldcupDefaultText passOrFailText={"통과"} handleClickEvent={handleClickEvent} />
-              <h1 className="xl:text-[100px] sm:text-[60px] text-[40px] absolute w-fix z-10 text-red-600">
-                부전승 발생!
-              </h1>
-              <PlayWorldcupData worldcupData={worldcupDatas[0]} />
-              <PlayWorldcupDefaultText passOrFailText={"탈락"} handleClickEvent={handleClickEvent} />
-            </>
-          ) : (
-            <>
-              <PlayWorldcupData chooseCandidate={handleClickEvent} worldcupData={worldcupDatas[0]} />
-              <div>
-                <Versus />
-              </div>
-              <PlayWorldcupData chooseCandidate={handleClickEvent} worldcupData={worldcupDatas[1]} />
-            </>
-          )}
-        </div>
+        <>
+          <PlayWorldcupData handleChooseCandidate={handleChooseCandidate} candidateInfo={candidateList[0]} />
+          <div>
+            <Versus />
+          </div>
+          <PlayWorldcupData handleChooseCandidate={handleChooseCandidate} candidateInfo={candidateList[1]} />
+        </>
       )}
-    </>
+    </div>
   );
 };
 

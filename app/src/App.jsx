@@ -63,7 +63,7 @@ const App = () => {
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
             <Route path="/oauth2/redirect" component={LoginCallback} />
-            <Route path="/playWorldcup" component={PlayWorldcup} />
+            <Route path="/playWorldcup/*" component={PlayWorldcup} />
             <Route path="/playSelect" component={PlaySelect} />
             {isLogin ? (
               <>
