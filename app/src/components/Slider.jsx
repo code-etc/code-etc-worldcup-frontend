@@ -151,71 +151,68 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
     }
   }, [itemIndex]);
 
-  return (
-    <>
-      {loading ? (
-        notData ? (
-          <></>
-        ) : (
-          <div className="flex justify-center items-center h-[250px]">
-            <div className="text-center">Loading</div>
-          </div>
-        )
-      ) : (
-        <div ref={ref}>
-          <>
-            <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
-              <ul
-                className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
-                onTouchStart={(e) => {
-                  touchStartPoint.current.x = e.changedTouches[0].clientX;
-                  touchStartPoint.current.y = e.changedTouches[0].clientY;
-                  isTouching.current = true;
-                }}
-                onTouchEnd={(e) => {
-                  touchEndPoint.current.x = e.changedTouches[0].clientX;
-                  touchEndPoint.current.y = e.changedTouches[0].clientY;
-                  if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
-                    setItemIndex((prev) => prev + 1);
-                  } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
-                    setItemIndex((prev) => prev - 1);
-                  }
-                  isTouching.current = false;
-                }}
-                ref={ulRef}
-              >
-                {datas.map((data) => (
-                  <SliderItem
-                    data={data}
-                    loadCount={loadCount}
-                    isLoading={isLoading}
-                    setIsLoading={setIsLoading}
-                    datasLength={datas.length}
-                  />
-                ))}
-              </ul>
-              <SliderNextButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
-              <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
-            </div>
-
-            <div className="flex items-center	justify-center mb-[10px]">
-              <ul className="flex">
-                {datas.map((data, i) => (
-                  <SliderIndexButton
-                    itemIndex={itemIndex}
-                    setItemIndex={setItemIndex}
-                    VISIBLE_NUMBER={VISIBLE_NUMBER}
-                    i={i}
-                    isButtonClick={isButtonClick}
-                    datasLength={datas.length}
-                  />
-                ))}
-              </ul>
-            </div>
-          </>
+  if (loading) {
+    if (notData) {
+      return <></>;
+    } else {
+      return (
+        <div className="flex justify-center items-center h-[250px]">
+          <div className="text-center">Loading</div>
         </div>
-      )}
-    </>
+      );
+    }
+  }
+  return (
+    <div ref={ref}>
+      <div className={`relative w-[100%] h-[250px] mb-[10px] overflow-hidden`}>
+        <ul
+          className={`absolute top-0 left-0 flex h-[250px] transition-[transform] duration-300 ease-in-out mainFont`}
+          onTouchStart={(e) => {
+            touchStartPoint.current.x = e.changedTouches[0].clientX;
+            touchStartPoint.current.y = e.changedTouches[0].clientY;
+            isTouching.current = true;
+          }}
+          onTouchEnd={(e) => {
+            touchEndPoint.current.x = e.changedTouches[0].clientX;
+            touchEndPoint.current.y = e.changedTouches[0].clientY;
+            if (touchStartPoint.current.x - touchEndPoint.current.x > 10) {
+              setItemIndex((prev) => prev + 1);
+            } else if (touchEndPoint.current.x - touchStartPoint.current.x > 10) {
+              setItemIndex((prev) => prev - 1);
+            }
+            isTouching.current = false;
+          }}
+          ref={ulRef}
+        >
+          {datas.map((data) => (
+            <SliderItem
+              data={data}
+              loadCount={loadCount}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              datasLength={datas.length}
+            />
+          ))}
+        </ul>
+        <SliderNextButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
+        <SliderPrevButton isButtonClick={isButtonClick} setItemIndex={setItemIndex} />
+      </div>
+
+      <div className="flex items-center	justify-center mb-[10px]">
+        <ul className="flex">
+          {datas.map((data, i) => (
+            <SliderIndexButton
+              itemIndex={itemIndex}
+              setItemIndex={setItemIndex}
+              VISIBLE_NUMBER={VISIBLE_NUMBER}
+              i={i}
+              isButtonClick={isButtonClick}
+              datasLength={datas.length}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 export default Slide;

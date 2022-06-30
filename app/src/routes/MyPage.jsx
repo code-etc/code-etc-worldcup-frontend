@@ -322,7 +322,7 @@ const MyPage = () => {
                 <div>등록한 월드컵이 없습니다.</div>
               ) : (
                 <div className="mx-[-30px]">
-                  {userId ? (
+                  {userId &&
                     sliderCount.map((a, i) =>
                       i === sliderCount.length - 1 ? (
                         <Slider
@@ -334,10 +334,7 @@ const MyPage = () => {
                       ) : (
                         <Slider userId={userIdRef.current} page={i} sliderItemSize={15} />
                       ),
-                    )
-                  ) : (
-                    <></>
-                  )}
+                    )}
                 </div>
               )}
             </div>
