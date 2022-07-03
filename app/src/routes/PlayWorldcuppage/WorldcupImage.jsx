@@ -42,10 +42,10 @@ const WorldcupImage = ({ worldcupData, handleChooseCandidate, className, candida
         alt={worldcupData.name}
         onClick={handleChooseCandidate}
       >
-        <BackgroundImage
+        <img
           src={candidateImageInfo}
           className={`flex flex-col relative items-center justify-center w-[100%] h-[250px] text-black text-center bg-white rounded-[3%] bg-contain bg-no-repeat bg-center before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
-        ></BackgroundImage>
+        />
       </div>
     </>
   );
