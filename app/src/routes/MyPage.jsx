@@ -6,6 +6,8 @@ import jwt from "jwt-decode";
 import { AiOutlineCaretDown, AiOutlineConsoleSql } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import { useHistory } from "react-router-dom";
+import Slider from "../components/Slider";
+
 const MyPage = () => {
   const [myWorldcupList, setmyWorldcupList] = useState([]);
   const [myWorldcupImages, setmyWorldcupImages] = useState([]);
@@ -15,6 +17,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const [place, setPlace] = useState("");
   const [age, setAge] = useState(0);
+  const [userId, setUserId] = useState();
   const [isModify, setIsModify] = useState(false);
   const refWorldcupBtn = useRef();
   const refSelectBtn = useRef();
@@ -24,63 +27,66 @@ const MyPage = () => {
   const inputNickNameRef = useRef();
   const inputPlaceRef = useRef();
   const inputAgeRef = useRef();
-  const [userId, setUserId] = useState();
-  const getMyWorldcupImages = async (list) => {
+  const userIdRef = useRef();
+  const [sliderCount, setSliderCount] = useState([0]);
+
+  const getMyWorldcupImages = (list) => {
+    console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
-      .get(`/games/strange-brother/${list.gameId}/candidates/${list.candidates[0]}/image`, {
-        headers: {
-          Authorization: `Bearer ${cookies.load("access-token")}`,
+      .get(
+        `/games/strange-brother/${list.id}/candidates/${
+          list.candidates[Math.floor(Math.random() * list.candidates.length)]
+        }/image`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.load("access-token")}`,
+          },
+          responseType: "blob",
+          params: {
+            width: 0,
+            height: 240,
+          },
         },
-        responseType: "blob",
-        params: {
-          width: 400,
-          height: 250,
-        },
-      })
+      )
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         const blob = new Blob([res.data], { type: "image/png" });
         console.log("아니");
         const url = window.URL.createObjectURL(blob);
         console.log(url);
         const obj = {
-          gameId: list.gameId,
+          gameId: list.id,
           thumbnail: url,
           title: list.title,
         };
-        setmyWorldcupList((prev) => [...prev, obj]);
+        setmyWorldcupList((prev) => [...prev, obj].sort((a, b) => (a.gameId < b.gameId ? -1 : 1)));
       })
       .catch((err) => {
         console.log(err);
         const obj = {
-          gameId: list.gameId,
+          gameId: list.id,
           thumbnail: "",
           title: list.title,
         };
-        setmyWorldcupList((prev) => [...prev, obj]);
+        setmyWorldcupList((prev) => [...prev, obj].sort((a, b) => (a.gameId < b.gameId ? -1 : 1)));
       });
   };
-  const getMyWorldcup = async () => {
-    // const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
-    // console.log(json);
-    // setMyWorldcupList(json);
-    axios.default.paramsSerializer = (params) => {
-      return qs.stringify(params);
-    };
+  const getMyWorldcup = () => {
     const params = {
-      userId: userId,
       // pageable: {
       page: 0,
       size: 10,
+      "user-id": userIdRef.current,
+      // random: true,
       // sort: "title,asc",
       // sort: ["title,desc"],
       // },
     };
+    console.log(params);
     axios
       .get(`/games/strange-brother`, { params })
       .then((res) => {
         console.log(res.data._embedded.strangeBrotherGameQueryResponses);
-        // setmyWorldcupList(res.data._embedded.strangeBrotherGameQueryResponses);
         res.data._embedded.strangeBrotherGameQueryResponses.map((list) => {
           getMyWorldcupImages(list);
         });
@@ -115,7 +121,9 @@ const MyPage = () => {
           setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
-          setUserId(res.data.userId);
+          userIdRef.current = res.data.id;
+          setUserId(res.data.id);
+          getMyWorldcup();
         })
         .catch((err) => {
           console.log(err);
@@ -148,7 +156,7 @@ const MyPage = () => {
       console.log("place", place);
       axios
         .put(
-          `/accounts/${userId}`,
+          `/accounts/${userIdRef.current}`,
           JSON.stringify({
             nickname: nickname,
             age: age,
@@ -197,15 +205,13 @@ const MyPage = () => {
       refSelectBtn.current.classList.add("rotate-180");
     }
   }, [selectDisplay]);
+
   useEffect(() => {
     // getMyWorldcup();
     // getMySelect();
     getUser();
   }, []);
 
-  useEffect(() => {
-    getMyWorldcup();
-  }, [userId]);
   return (
     <div className="mainFont">
       <form className="py-[40px] px-[30px]" onSubmit={submitHandler}>
@@ -315,32 +321,21 @@ const MyPage = () => {
               ) : myWorldcupList.length === 0 ? (
                 <div>등록한 월드컵이 없습니다.</div>
               ) : (
-                <ul ref={refWorldcupList} className="md:flex md:flex-wrap">
-                  {myWorldcupList.map((item, i) => (
-                    <li
-                      key={i}
-                      className={`relative flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]`}
-                    >
-                      <img src={item.thumbnail} className="absolute opacity-50 object-contain h-[100%]" alt="" />
-                      <div className="text-center z-10">
-                        <strong>{item.title}</strong>
-                        <div className="flex justify-center items-center">
-                          <a href="/" className="mr-[10px]">
-                            시작하기
-                          </a>
-                          <a href="/" className="mr-[10px]">
-                            랭킹보기
-                          </a>
-                          <a href="/modify">수정하기</a>
-                        </div>
-                      </div>
-
-                      <button type="button" className="absolute top-0 right-0 p-[10px]">
-                        <TiDelete className="text-[24px]" onClick={() => deleteHandler(item.gameId)} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mx-[-30px]">
+                  {userId &&
+                    sliderCount.map((a, i) =>
+                      i === sliderCount.length - 1 ? (
+                        <Slider
+                          userId={userIdRef.current}
+                          page={i}
+                          setSliderCount={setSliderCount}
+                          sliderItemSize={15}
+                        />
+                      ) : (
+                        <Slider userId={userIdRef.current} page={i} sliderItemSize={15} />
+                      ),
+                    )}
+                </div>
               )}
             </div>
 
@@ -368,12 +363,11 @@ const MyPage = () => {
                       className="flex justify-center items-center bg-slate-300 bg-gray w-[100%] h-[230px] mb-[10px] md:w-[400px] md:h-[240px] md:mr-[20px]"
                     >
                       <div>
-                        <strong>{item.title}</strong>
+                        <strong>{item.gameId}</strong>
                         <div className="flex justify-center items-center">
                           <a href="/" className="mr-[10px]">
                             시작하기
                           </a>
-                          <a href="/">랭킹보기</a>
                         </div>
                       </div>
                     </li>
