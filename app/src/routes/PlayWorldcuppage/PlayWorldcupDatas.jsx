@@ -8,6 +8,7 @@ import WorldcupSelectResult from "./WorldcupSelectResult";
 const PlayWorldcupDatas = ({
   worldcupMatchList,
   candidateList,
+  candidateImage,
   setWorldcupWinner,
   currentMatch,
   setCurrentMatch,
@@ -51,7 +52,7 @@ const PlayWorldcupDatas = ({
             candidateInfo={candidateList[0]}
           />
           <h1 className="xl:text-[100px] sm:text-[60px] text-[40px] absolute w-fix z-10 text-red-600">부전승 발생!</h1>
-          <PlayWorldcupData candidateInfo={candidateList[0]} />
+          <PlayWorldcupData candidateInfo={candidateList[0]} candidateImageInfo={candidateImage[0]} />
           <PlayWorldcupDefaultText
             passOrFailText="탈락"
             handleClickEvent={handleChooseCandidate}
@@ -60,11 +61,19 @@ const PlayWorldcupDatas = ({
         </>
       ) : (
         <>
-          <PlayWorldcupData handleChooseCandidate={handleChooseCandidate} candidateInfo={candidateList[0]} />
+          <PlayWorldcupData
+            handleChooseCandidate={handleChooseCandidate}
+            candidateInfo={candidateList[0]}
+            candidateImageInfo={candidateImage[0]}
+          />
           <div>
             <Versus />
           </div>
-          <PlayWorldcupData handleChooseCandidate={handleChooseCandidate} candidateInfo={candidateList[1]} />
+          <PlayWorldcupData
+            handleChooseCandidate={handleChooseCandidate}
+            candidateInfo={candidateList[1]}
+            candidateImageInfo={candidateImage[1]}
+          />
         </>
       )}
     </div>

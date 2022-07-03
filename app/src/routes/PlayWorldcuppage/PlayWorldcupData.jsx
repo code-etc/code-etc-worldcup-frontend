@@ -3,7 +3,7 @@ import WorldcupLoadingImage from "./WorldcupLoadingImage";
 
 const WorldcupImage = lazy(() => import("./WorldcupImage"));
 
-const PlayWorldcupData = ({ candidateInfo, handleChooseCandidate }) => {
+const PlayWorldcupData = ({ candidateInfo, handleChooseCandidate, candidateImageInfo }) => {
   if (!candidateInfo) return;
 
   return (
@@ -18,6 +18,7 @@ const PlayWorldcupData = ({ candidateInfo, handleChooseCandidate }) => {
         >
           <WorldcupImage
             worldcupData={candidateInfo.data}
+            candidateImageInfo={candidateImageInfo}
             handleChooseCandidate={handleChooseCandidate}
             className={`2xl:max-w-[780px] 2xl:max-h-[700px] xl:max-w-[580px] xl:max-h-[480px] lg:max-w-[500px] lg:max-h-[400px] max-w-[270px] max-h-[200px] cursor-pointer hover:scale-105 m-auto opacity-0`}
           />

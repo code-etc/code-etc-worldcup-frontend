@@ -12,8 +12,9 @@ const PlayWorldcup = () => {
   const [worldcupMatchList, setWorldcupMatchList] = useState([]);
   const [currentMatch, setCurrentMatch] = useState("");
   const [candidateList, setCandidateList] = useState([]);
+  // 후보자 이미지 정보
+  const [candidateImage, setCandidateImage] = useState([]);
   const [playId, setPlayId] = useState("");
-  // const
 
   const [selectCandidate, setSelectCandidate] = useState(false);
   const [matchWinner, setMatchWinner] = useState("");
@@ -87,18 +88,55 @@ const PlayWorldcup = () => {
           url: `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateA}`,
           method: "GET",
         });
+        // 첫번째 후보자 이미지 정보 요청
+        const candidateAImage = await axios(
+          {
+            url: `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateA}/image`,
+            method: "get",
+          },
+          {
+            responseType: "blob",
+            params: {
+              width: 400,
+              height: 400,
+            },
+          },
+        ).then((res) => {
+          const blob = new Blob([res.data], { type: "image/png" });
+          return window.URL.createObjectURL(blob);
+        });
 
         let candidateBInfo = "";
+        let candidateBImage = "";
         if (worldcupMatchList[currentMatch].candidateB) {
           candidateBInfo = await axios({
             url: `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateB}`,
             method: "GET",
+          });
+          // 두번째 후보자 이미지 정보 요청
+          candidateBImage = await axios(
+            {
+              url: `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateB}/image`,
+              method: "get",
+            },
+            {
+              responseType: "blob",
+              params: {
+                width: 400,
+                height: 400,
+              },
+            },
+          ).then((res) => {
+            const blob = new Blob([res.data], { type: "image/png" });
+            return window.URL.createObjectURL(blob);
           });
         }
 
         setTimeout(() => {
           setWorldcupMatchCount([currentMatch + 1, worldcupMatchCount[1]]);
           setCandidateList([candidateAInfo, candidateBInfo]);
+          // 두 후보자 이미지 정보 저장
+          setCandidateImage([candidateAImage, candidateBImage]);
           setSelectCandidate(false);
         }, 500);
       } catch (error) {
@@ -123,6 +161,7 @@ const PlayWorldcup = () => {
           <PlayWorldcupDatas
             worldcupMatchList={worldcupMatchList}
             candidateList={candidateList}
+            candidateImage={candidateImage}
             setWorldcupWinner={setWorldcupWinner}
             currentMatch={currentMatch}
             setCurrentMatch={setCurrentMatch}
