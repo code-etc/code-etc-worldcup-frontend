@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import PlayWorldcupCount from "./PlayWorldcupCount";
 import PlayWorldcupDatas from "./PlayWorldcupDatas";
 import PlayWorldcupWinner from "./PlayWorldcupWinner";
+import WorldcupSelectResult from "./WorldcupSelectResult";
 import WorldcupTitle from "./WorldcupTitle";
 
 const PlayWorldcup = () => {
@@ -17,7 +18,7 @@ const PlayWorldcup = () => {
   const [playId, setPlayId] = useState("");
 
   const [selectCandidate, setSelectCandidate] = useState(false);
-  const [matchWinner, setMatchWinner] = useState("");
+  const [matchWinner, setMatchWinner] = useState(["", ""]);
 
   const [worldcupWinner, setWorldcupWinner] = useState(false);
 
@@ -96,7 +97,7 @@ const PlayWorldcup = () => {
             {
               responseType: "blob",
               params: {
-                width: 400,
+                width: 0,
                 height: 400,
               },
             },
@@ -140,7 +141,7 @@ const PlayWorldcup = () => {
               {
                 responseType: "blob",
                 params: {
-                  width: 400,
+                  width: 0,
                   height: 400,
                 },
               },

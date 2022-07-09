@@ -2,7 +2,7 @@ import React from "react";
 
 const PlayWorldcupDefaultText = ({ passOrFailText, handleClickEvent, candidateInfo }) => {
   if (!candidateInfo) return;
-  console.log(candidateInfo);
+  console.log("PlayWorldcupDefaultText", candidateInfo);
   return (
     <div className="w-[200px] h-[100%] flex justify-center items-center" onClick={handleClickEvent}>
       <p

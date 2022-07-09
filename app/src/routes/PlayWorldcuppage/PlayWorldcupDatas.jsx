@@ -19,19 +19,33 @@ const PlayWorldcupDatas = ({
 }) => {
   const handleChooseCandidate = async (event) => {
     try {
-      await axios({
-        url: `/game-service/matches/${worldcupMatchList[currentMatch].id}?winner=${event.target.id}`,
-        method: "PUT",
-      });
-
-      const winnerInfo = candidateList.find((candidate) => candidate.data.id === event.target.id);
+      if (candidateList[1] === "") {
+        if (event.target.textContent === "통과") {
+          await axios({
+            url: `/game-service/matches/${worldcupMatchList[currentMatch].id}?winner=${candidateList[0].data.id}`,
+            method: "PUT",
+          });
+          setMatchWinner([candidateList[0], "통과"]);
+        } else if (event.target.textContent === "탈락") {
+          await axios({
+            url: `/game-service/matches/${worldcupMatchList[currentMatch].id}?looser=${candidateList[0].data.id}`,
+            method: "PUT",
+          });
+          setMatchWinner([candidateList[0], "탈락"]);
+        }
+      } else {
+        const winnerInfo = candidateList.find((candidate) => candidate.data.id === event.target.id);
+        await axios({
+          url: `/game-service/matches/${worldcupMatchList[currentMatch].id}?winner=${winnerInfo.data.id}`,
+          method: "PUT",
+        });
+        setMatchWinner([winnerInfo, "승리"]);
+      }
 
       if (worldcupMatchList.length === 1) {
         setWorldcupWinner(true);
       }
-
       setCurrentMatch((prev) => (prev += 1));
-      setMatchWinner(winnerInfo);
       setSelectCandidate(true);
     } catch (error) {
       console.log(error);
