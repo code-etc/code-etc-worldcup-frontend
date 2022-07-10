@@ -4,7 +4,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   const [tagInput, setTagInput] = useState("");
   const refTag = useRef();
   useEffect(() => {
-    setTags(item.tags);
+    setTags(item?.tags);
   }, []);
   const onChangeInput = (e) => {
     onImageItemSetting(e.target.value, item.tags, i);
@@ -42,7 +42,7 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
     }
   }, [tagInput]);
   useEffect(() => {
-    onImageItemSetting(item.title, tags, i);
+    onImageItemSetting(item?.title, tags, i);
     setTagInput("");
     console.log(tags);
   }, [tags]);
