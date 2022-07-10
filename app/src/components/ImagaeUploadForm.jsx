@@ -12,7 +12,6 @@ const ImageUploadForm = ({ maxImageNum, setCategory, title, setTitle, items, set
 
   const onImageItemSetting = (imageTitle, tags, i) => {
     setItems(items.map((item) => (item?.id === i ? { ...item, title: imageTitle, tags } : item)));
-    console.log(items);
   };
 
   const deleteItem = (index) => {

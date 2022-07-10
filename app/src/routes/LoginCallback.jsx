@@ -11,7 +11,6 @@ const LoginCallback = ({ location }) => {
   refreshTokenExpires.setDate(refreshTokenExpires.getDate() + 14);
 
   // 배포하면 + httpOnly: true
-  console.log(userToken);
   cookies.save("access-token", userToken.Authorization.substr(7), { path: "/", tokenExpiredAt: accessTokenExpires });
   cookies.save("refresh-token", userToken.RefreshToken.substr(7), { path: "/", expires: refreshTokenExpires });
 

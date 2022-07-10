@@ -42,16 +42,13 @@ function RegisterFormUpload({ maxImageNum, items, setItems }) {
 
     for (let i = 0; i < fileCount; i++) {
       if (isSameImg) {
-        console.log("isSameImg2", isSameImg);
         break;
       }
       const theFile = files[i];
-      console.log(theFile);
       const reader = new FileReader();
       reader.readAsDataURL(theFile);
       reader.onloadend = (finishedEvnet) => {
         if (isSameImg) {
-          console.log("isSameImg", isSameImg);
           return;
         }
         const {
@@ -89,7 +86,6 @@ function RegisterFormUpload({ maxImageNum, items, setItems }) {
       const {
         target: { files },
       } = event;
-      console.log("파일:", files[0]);
       uploadFunc(files);
       event.target.value = "";
     },

@@ -70,12 +70,10 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
     axios
       .get(`/games/strange-brother`, { params })
       .then((res) => {
-        console.log(`${page}: ${res.data._embedded.strangeBrotherGameQueryResponses.length}`);
         const temp = res.data._embedded.strangeBrotherGameQueryResponses;
         setDatas(temp ? temp : []);
       })
       .catch((err) => {
-        console.log(err);
         setNotData(true);
       });
   };
@@ -99,7 +97,6 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
     } else if (!timeoutRef.current) {
       timeoutRef.current = setInterval(() => {
         setItemIndex((prev) => prev + 1);
-        console.log("hi");
       }, 5000);
     }
   }, [inView, isLoading]);
@@ -107,7 +104,6 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
   useEffect(() => {
     getContent();
 
-    console.log("width: ", window.innerWidth);
     if (!userId) {
       if (window.innerWidth < 730) {
         setVisibleNumber(1);
@@ -121,19 +117,16 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
     } else {
       setVisibleNumber(1);
     }
-    console.log("VISIBLE_NUMBER: ", VISIBLE_NUMBER);
     window.addEventListener("resize", handleResize);
     //자동 슬라이드
     timeoutRef.current = setInterval(() => {
       setItemIndex((prev) => prev + 1);
-      console.log("hi");
     }, 5000);
 
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
   useEffect(() => {
-    console.log(itemIndex);
     if (isButtonClick.current) {
       //버튼클릭시 다시 interval 종료후 다시 실행
       clearTimeout(timeoutRef.current);

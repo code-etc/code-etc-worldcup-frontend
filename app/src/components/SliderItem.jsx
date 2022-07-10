@@ -9,11 +9,9 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
   const history = useHistory();
 
   const getNickname = () => {
-    console.log(data);
     axios.get(`/accounts/${data.userId}`).then((res) => setNickname(res.data.nickname));
   };
   const getWorldcupImage = (list) => {
-    console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
       .get(
         `/games/strange-brother/${list.id}/candidates/${
@@ -30,7 +28,6 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
       .then((res) => {
         const blob = new Blob([res.data], { type: "image/png" });
         const url = window.URL.createObjectURL(blob);
-        console.log(url);
         setImageUrl(url);
       })
       .catch((err) => {
@@ -60,9 +57,6 @@ function SliderItem({ data, loadCount, isLoading, setIsLoading, datasLength }) {
             if (hasLoaded) {
               loadCount.current++;
               setIsLoading(false);
-              if (loadCount.current === datasLength - 1) {
-                console.log(datasLength, loadCount.current);
-              }
             }
           }}
         >
