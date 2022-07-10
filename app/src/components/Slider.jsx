@@ -128,6 +128,8 @@ const Slide = ({ page, setSliderCount, sliderItemSize, userId }) => {
       setItemIndex((prev) => prev + 1);
       console.log("hi");
     }, 5000);
+
+    return () => clearTimeout(timeoutRef.current);
   }, []);
 
   useEffect(() => {
