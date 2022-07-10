@@ -35,15 +35,12 @@ const WorldcupImage = ({ worldcupData, handleChooseCandidate, className, candida
         alt={worldcupData.name}
         onClick={handleChooseCandidate}
       /> */}
-      <div
-        id={worldcupData.id}
-        ref={imageRef}
-        className={className}
-        alt={worldcupData.name}
-        onClick={handleChooseCandidate}
-      >
+      <div id={worldcupData.id} ref={imageRef} className={className} onClick={handleChooseCandidate}>
         <img
+          id={worldcupData.id}
+          ref={imageRef}
           src={candidateImageInfo}
+          alt={worldcupData.name}
           className={`flex flex-col relative items-center justify-center w-[100%] h-[250px] text-black text-center bg-white rounded-[3%] bg-contain bg-no-repeat bg-center before:content-[''] before:opacity-50 before:rounded-[3%] before:absolute before:inset-0 before:bg-black`}
         />
       </div>
