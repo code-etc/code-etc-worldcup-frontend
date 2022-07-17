@@ -24,7 +24,6 @@ const PlaySelect = () => {
     const data = await response.json();
     setSelectDatas([...data.select]);
     setSelectTitle(data.title);
-    console.log(selectResults);
   };
 
   const getSelectResult = async () => {

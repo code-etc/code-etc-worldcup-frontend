@@ -4,7 +4,6 @@ import Versus from "./Versus";
 
 const PlaySelectDatas = ({ selectDatas, setClickSelect }) => {
   const handleSelect = (event) => {
-    console.log(event.target);
     setClickSelect(true);
   };
 

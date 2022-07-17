@@ -34,19 +34,16 @@ const App = () => {
           },
         )
         .then((res) => {
-          console.log(res);
           if (res.data.message === "success") {
             setIsLoading(false);
             setIsLogin(true);
           }
         })
         .catch((err) => {
-          console.log("엥");
           setIsLoading(false);
           setIsLogin(false);
         });
     } else {
-      console.log("ee");
       setIsLoading(false);
       setIsLogin(false);
     }

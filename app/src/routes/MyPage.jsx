@@ -31,7 +31,6 @@ const MyPage = () => {
   const [sliderCount, setSliderCount] = useState([0]);
 
   const getMyWorldcupImages = (list) => {
-    console.log(list.candidates[Math.floor(Math.random() * list.candidates.length)]);
     axios
       .get(
         `/games/strange-brother/${list.id}/candidates/${
@@ -49,11 +48,8 @@ const MyPage = () => {
         },
       )
       .then((res) => {
-        console.log(res.data);
         const blob = new Blob([res.data], { type: "image/png" });
-        console.log("아니");
         const url = window.URL.createObjectURL(blob);
-        console.log(url);
         const obj = {
           gameId: list.id,
           thumbnail: url,
@@ -82,11 +78,9 @@ const MyPage = () => {
       // sort: ["title,desc"],
       // },
     };
-    console.log(params);
     axios
       .get(`/games/strange-brother`, { params })
       .then((res) => {
-        console.log(res.data._embedded.strangeBrotherGameQueryResponses);
         res.data._embedded.strangeBrotherGameQueryResponses.map((list) => {
           getMyWorldcupImages(list);
         });
@@ -95,7 +89,6 @@ const MyPage = () => {
   };
   const getMySelect = async () => {
     const json = await (await fetch(`https://61fbded03f1e34001792c680.mockapi.io/myWorldcup`)).json();
-    console.log(json);
     setMySelectList(json);
   };
   const displayWorldcupHandler = () => {
@@ -106,10 +99,8 @@ const MyPage = () => {
   };
   const getUser = () => {
     const token = cookies.load("access-token");
-    console.log(token);
     if (token) {
       const decode = jwt(token);
-      console.log(decode);
       axios
         .get(`/accounts/${decode.username}`, {
           headers: {
@@ -117,7 +108,6 @@ const MyPage = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
@@ -131,9 +121,6 @@ const MyPage = () => {
           cookies.remove("refresh-token");
           history.push("/login");
         });
-    } else {
-      console.log("노쿠키");
-      // history.push("/login");
     }
     // 유저 정보 호출
   };
@@ -153,7 +140,6 @@ const MyPage = () => {
     e.preventDefault();
     if (isModify) {
       const decode = jwt(cookies.load("access-token"));
-      console.log("place", place);
       axios
         .put(
           `/accounts/${userIdRef.current}`,
@@ -174,13 +160,12 @@ const MyPage = () => {
           },
         )
         .then((res) => {
-          console.log("수정완료", res);
           setNickname(res.data.nickname);
           setPlace(res.data.address ? res.data.address.district : "");
           setAge(res.data.age ? res.data.age : "");
           alert("수정완료");
         })
-        .catch((err) => console.log("수정실패", err));
+        .catch((err) => console.log(err));
       setIsModify(false);
     } else {
       setIsModify(true);

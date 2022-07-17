@@ -106,25 +106,6 @@ const PlayWorldcup = () => {
             const blob = new Blob([res.data], { type: "image/png" });
             candidateAImage = window.URL.createObjectURL(blob);
           });
-        // const res = await axios(
-        //   {
-        //     url: `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateA}/image`,
-        //     method: "get",
-        //   },
-        //   {
-        //     responseType: "blob",
-        //     params: {
-        //       width: 400,
-        //       height: 400,
-        //     },
-        //   },
-        // );
-        // console.log(
-        //   `/games/strange-brother/${location.state.gameId}/candidates/${worldcupMatchList[currentMatch].candidateA}/image`,
-        // );
-        // const blob = new Blob([res.data], { type: "image/png" });
-        // const candidateAImage = window.URL.createObjectURL(blob);
-        // console.log(candidateAImage);
 
         let candidateBInfo = "";
         let candidateBImage = "";

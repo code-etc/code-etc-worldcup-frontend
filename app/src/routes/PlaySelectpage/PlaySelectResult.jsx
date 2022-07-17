@@ -1,9 +1,6 @@
 import React from "react";
 
 const PlaySelectResult = ({ selectResults }) => {
-  console.log(selectResults);
-  console.log(selectResults[0].percent.split("").splice(0, 2).join(""));
-
   return (
     <>
       <div className="flex w-[100%] h-[180px] content-center">

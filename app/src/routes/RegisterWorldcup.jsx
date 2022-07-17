@@ -19,13 +19,11 @@ const RegisterWorldcup = () => {
     e.preventDefault();
   }, []);
   const backUpload = (chain) => {
-    console.log("Count:", count);
     const form = new FormData();
     let tagsObj = [];
     items[count].tags.forEach((tag) => {
       tagsObj.push({ classifier: tag });
     });
-    console.log(JSON.stringify({ name: items[count].title, tags: tagsObj }));
     form.append(
       "candidate",
       new Blob([JSON.stringify({ name: items[count].title, tags: tagsObj })], { type: "application/json" }),
@@ -39,7 +37,6 @@ const RegisterWorldcup = () => {
         },
       })
       .then((r) => {
-        console.log(r);
         count++;
         setCountState(count + 1);
         if (count >= items.length) {
@@ -62,7 +59,6 @@ const RegisterWorldcup = () => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
     if (title.length === 0) {
       alert("제목을 입력해주세요.");
       return;
@@ -93,13 +89,10 @@ const RegisterWorldcup = () => {
         },
       )
       .then((res) => {
-        console.log(res);
-        console.log(res.data._links["register-candidate"].href);
         const chain = res.data._links["register-candidate"].href.substring(
           res.data._links["register-candidate"].href.search("/games"),
           res.data._links["register-candidate"].href.length,
         );
-        console.log("chain", chain);
         backUpload(chain);
       })
       .catch((err) => {
@@ -113,10 +106,8 @@ const RegisterWorldcup = () => {
       return 0;
     };
     const token = cookies.load("access-token");
-    console.log(token);
     if (token) {
       const decode = jwt(token);
-      console.log(decode);
       axios
         .get(`/accounts/${decode.username}`, {
           headers: {
@@ -124,7 +115,6 @@ const RegisterWorldcup = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setUserid(res.data.userId);
         })
         .catch((err) => {
@@ -133,9 +123,6 @@ const RegisterWorldcup = () => {
           cookies.remove("refresh-token");
           history.push("/login");
         });
-    } else {
-      console.log("노쿠키");
-      // history.push("/login");
     }
   }, []);
   return (

@@ -4,24 +4,18 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
   const [tagInput, setTagInput] = useState("");
   const refTag = useRef();
   useEffect(() => {
-    setTags(item.tags);
+    setTags(item?.tags);
   }, []);
   const onChangeInput = (e) => {
     onImageItemSetting(e.target.value, item.tags, i);
   };
   const onChangeTextArea = (e) => {
-    const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
-    console.log(regex.test(e.target.value));
-
     setTagInput(e.target.value);
-    console.log(e.target.value);
   };
   const onDeleteBtn = (e) => {
     deleteItem(i);
-    console.log("여기 i ", i, " tags: ", item.tags);
   };
   const onDeleteTagBtn = (e) => {
-    console.log(e.target.id);
     setTags(item.tags.filter((tag, i) => i !== Number(e.target.id)));
   };
   useEffect(() => {
@@ -41,10 +35,10 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
       }
     }
   }, [tagInput]);
+
   useEffect(() => {
-    onImageItemSetting(item.title, tags, i);
+    onImageItemSetting(item?.title, tags, i);
     setTagInput("");
-    console.log(tags);
   }, [tags]);
   return (
     <li className="flex max-w-[300px] m-[10px]">
@@ -70,7 +64,6 @@ const ImageItem = ({ item, i, onImageItemSetting, deleteItem }) => {
             value={item ? item.title : ""}
             onChange={onChangeInput}
             onKeyDown={(e) => {
-              console.log(e.key);
               if (e.key === "Enter") {
                 e.preventDefault();
                 refTag.current.focus();
